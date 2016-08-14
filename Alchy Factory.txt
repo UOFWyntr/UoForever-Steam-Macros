@@ -68,10 +68,6 @@ if @findobject 'targetDyes'
   headmsg 'Have Dye Tub' '64'
 endif
 pause 600
-//
-//
-//
-//
 @clearjournal
 //unsetalias 'regBag'
 if not @findobject 'regBag'
@@ -122,18 +118,22 @@ clearlist 'PotionList'
 @pushlist 'PotionList' 0xf0d
 //
 for 0 to 'PotionList'
+//clearns up backpack
   while @findtype 'PotionList[]' 'any' 'backpack'
     headmsg '*sigh* doing some house cleaning first tsk tsk' '49'
     pause 1500
     moveitem found 'trashBag'
   endwhile
 endfor
+//search for empty bottle
 if @counttype 0xf0e any backpack < 1
   //movetype (graphic) (source) (destination) [(x y z)] [color] [amount] [range or search level]
   @movetype 0xf0e 'fullKegBag' backpack 0 0 0 any 1
   pause 2000
 endif
-//------------------
+//---------------------------
+//manual potion selector
+//---------------------------
 headmsg 'Please create the first potion manually' '1272'
 //while not @ingump 0x38920abd 'You create'
 while not @ingump 0x38920abd 'You pour'
@@ -160,9 +160,9 @@ while not @ingump 0x38920abd 'You pour'
   endif
   //
 endwhile
-//
-//-----
-//
+//---------------------------
+//manual potion selector
+//---------------------------
 headmsg 'Potion is set, one moment' '1272'
 pause 3000
 // !! init data
