@@ -1,0 +1,161 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+while not @findobject 'master runebook' any backpack
+  headmsg 'Select Bod Master Runebook'
+  promptalias 'master runebook'
+endwhile
+while not @findobject 'bodbook' any backpack
+  headmsg 'Select Bod Book'
+  promptalias 'bodbook'
+endwhile
+//----------------------------------------------------
+//Timer check
+//----------------------------------------------------
+if timerexists bods
+  //stop here while timer is less than 5 hours 4 mins
+  while timer bods < 18240000
+    headmsg 'Bod Timer Active' 58
+    @timermsg bods 32
+    pause 5000
+  endwhile
+  //once time is up it clears the timer and grabs more bods
+  if timer bods > 18240000
+    headmsg 'Bod timer is up! Time to get Bods' 32
+    removetimer bods
+  endif
+endif
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//Recall to tailor
+@useobject 'master runebook'
+waitforgump 0x554b87f3 5000
+replygump 0x554b87f3 29
+pause 4000
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//tailor
+while not @findobject tailor
+  headmsg 'Select tailor'
+  promptalias tailor
+  pause 2000
+endwhile
+if @findobject tailor
+  headmsg 'Tailor found'
+  clearjournal
+  while not @findtype 0x14ef 1155 backpack
+    if @findtype 0xf9d any backpack
+      //msg 'taffy sell'
+      waitforcontext tailor 3 15000
+      pause 1000
+      clickscreen 229 103 double left
+      pause 1000
+      clickscreen 315 445 single left
+      pause 3000
+    else
+      //msg 'taffy buy'
+      waitforcontext tailor 2 15000
+      pause 1000
+    endif
+    headmsg 'Check for bod gump' 48
+    pause 2000
+    if @gumpexists 0x9bade6ea
+      headmsg 'Sbod gump detected'
+      headmsg 'Accepting Bod'
+      replygump 0x9bade6ea 1
+      pause 3000
+    endif
+    pause 1000
+    if @gumpexists 0xbe0dad1e
+      headmsg 'Lbod gump detected'
+      headmsg 'Accepting Bod'
+      replygump 0xbe0dad1e 1
+      pause 3000
+    endif
+    pause 1000
+  endwhile
+  //bod gump
+endif
+headmsg 'Tailor Bod Done' 69
+/////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//recall to smith
+@useobject 'master runebook'
+waitforgump 0x554b87f3 5000
+replygump 0x554b87f3 35
+pause 4000
+/////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//blacksmith
+while not @findobject blacksmith
+  headmsg 'Select blacksmith'
+  promptalias blacksmith
+  pause 2000
+endwhile
+if @findobject blacksmith
+  headmsg 'Smith found'
+  clearjournal
+  while not @findtype 0x14ef 1102 backpack
+    if @findtype 0x1bf2 any backpack
+      //msg 'aldrick sell'
+      waitforcontext blacksmith 3 15000
+      pause 1000
+      clickscreen 229 103 double left
+      pause 1000
+      clickscreen 315 445 single left
+      pause 3000
+    else
+      //msg 'aldrick buy'
+      waitforcontext blacksmith 2 15000
+      pause 1000
+    endif
+    headmsg 'Check for bod gump' 48
+    pause 2000
+    if @gumpexists 0x9bade6ea
+      headmsg 'Sbod gump detected'
+      headmsg 'Accepting Bod'
+      replygump 0x9bade6ea 1
+      pause 3000
+    endif
+    pause 1000
+    if @gumpexists 0xbe0dad1e
+      headmsg 'Lbod gump detected'
+      headmsg 'Accepting Bod'
+      replygump 0xbe0dad1e 1
+      pause 3000
+    endif
+    pause 1000
+  endwhile
+endif
+headmsg 'Blacksmith Bod Done' 55
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//recall brit bank door
+@useobject 'master runebook'
+waitforgump 0x554b87f3 5000
+replygump 0x554b87f3 41
+pause 4000
+turn south
+turn south
+turn north
+walk north
+walk north
+walk north
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//timer creation
+if not timerexists bods
+  @createtimer bods
+endif
+pause 500
+//hangs here until timer reachers 5 hours 4 mins
+while not timer bods > 18240000
+  headmsg 'Total time waiting for bod:' 21
+  @timermsg bods 32
+  pause 2000
+endwhile
+pause 1000
+headmsg 'BOD TIME!'
+playsound f_hey.wav
+pause 1000
+replay
