@@ -161,7 +161,7 @@ while not @ingump 0x38920abd 'You pour'
   //
 endwhile
 //---------------------------
-//manual potion selector
+//search for potion type to create
 //---------------------------
 headmsg 'Potion is set, one moment' '1272'
 pause 3000
