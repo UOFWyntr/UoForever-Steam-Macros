@@ -1,0 +1,234 @@
+////////////////////////////////////////////////////////////////////////////
+//Begin Config //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+clearjournal
+//find alias
+while not @findobject axe
+  headmsg 'Select an axe'
+  promptalias axe
+endwhile
+//wood chest dump
+while not @findalias 'woodchest'
+  headmsg 'Select wood chest'
+  promptalias 'woodchest'
+endwhile
+//find suppliescontainer
+while not @findalias regs
+  headmsg 'Select regs'
+  promptalias regs
+endwhile
+////////////////////////////////////////////////////////////////////////////
+//Begin Runebook Config //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//homerunebook make sure and set the rune for home in this book to default
+while not @findobject homerunebook
+  headmsg 'Select home runebook'
+  promptalias homerunebook
+endwhile
+//find runebook
+while not @findobject lumberrunebook1
+  headmsg 'Select Rune Book 1 for lumberjacking..' 73
+  promptalias lumberrunebook1
+endwhile
+while not @findobject lumberrunebook2
+  headmsg 'Select Rune Book 2 for lumberjacking..' 73
+  promptalias lumberrunebook2
+endwhile
+while not @findobject lumberrunebook3
+  headmsg 'Select Rune Book 3 for lumberjacking..' 73
+  promptalias lumberrunebook3
+endwhile
+pause 1000
+////////////////////////////////////////////////////////////////////////////
+//Begin Lists //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------
+//runebook list
+//---------------------------------------------------------
+if not listexists 'woodrunebook'
+  @createlist 'woodrunebook'
+endif
+if 'list' 'woodrunebook' == '0'
+  @pushlist 'woodrunebook' 'lumberrunebook1'
+  @pushlist 'woodrunebook' 'lumberrunebook2'
+  @pushlist 'woodrunebook' 'lumberrunebook3'
+endif
+//---------------------------------------------------------
+//runebook call outst list
+//---------------------------------------------------------
+if not listexists 'runebookname'
+  @createlist 'runebookname'
+endif
+if 'list' 'runebookname' == '0'
+  @pushlist 'runebookname' 'Wood Runebook 1'
+  @pushlist 'runebookname' 'Wood Runebook 2'
+  @pushlist 'runebookname' 'Wood Runebook 3'
+endif
+//---------------------------------------------------------
+//replygump ids for recalling to books
+//---------------------------------------------------------
+if not listexists 'gumpid'
+  @createlist 'gumpid'
+endif
+poplist 'gumpid' 'front'
+if 'list' 'gumpid' == '0'
+  @pushlist 'gumpid' '5'
+  @pushlist 'gumpid' '11'
+  @pushlist 'gumpid' '17'
+  @pushlist 'gumpid' '23'
+  //
+  @pushlist 'gumpid' '29'
+  @pushlist 'gumpid' '35'
+  @pushlist 'gumpid' '41'
+  @pushlist 'gumpid' '47'
+  //
+  @pushlist 'gumpid' '53'
+  @pushlist 'gumpid' '59'
+  @pushlist 'gumpid' '65'
+  @pushlist 'gumpid' '71'
+  //
+  @pushlist 'gumpid' '77'
+  @pushlist 'gumpid' '83'
+  @pushlist 'gumpid' '89'
+  @pushlist 'gumpid' '95'
+  //
+endif
+//---------------------------------------------------------
+//recall call outs for position identification
+//---------------------------------------------------------
+if not listexists 'runebookposition'
+  @createlist 'runebookposition'
+endif
+poplist 'runebookposition' 'front'
+if 'list' 'runebookposition' == '0'
+  @pushlist 'runebookposition' 'Position 1'
+  @pushlist 'runebookposition' 'Position 2'
+  @pushlist 'runebookposition' 'Position 3'
+  @pushlist 'runebookposition' 'Position 4'
+  //
+  @pushlist 'runebookposition' 'Position 5'
+  @pushlist 'runebookposition' 'Position 6'
+  @pushlist 'runebookposition' 'Position 7'
+  @pushlist 'runebookposition' 'Position 8'
+  //
+  @pushlist 'runebookposition' 'Position 9'
+  @pushlist 'runebookposition' 'Position 10'
+  @pushlist 'runebookposition' 'Position 11'
+  @pushlist 'runebookposition' 'Position 12'
+  //
+  @pushlist 'runebookposition' 'Position 13'
+  @pushlist 'runebookposition' 'Position 14'
+  @pushlist 'runebookposition' 'Position 15'
+  @pushlist 'runebookposition' 'Position 16'
+  //
+endif
+////////////////////////////////////////////////////////////////////////////
+//Begin Lumberjacking //////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------
+//first runebook
+//---------------------------------------------------------
+//mana check
+for 0 to woodrunebook
+  while not mana > 11
+    headmsg 'Waiting for mana'
+    useskill meditation
+    pause 5000
+  endwhile
+  //---------------------------------------------------------
+  //recall to trees
+  //---------------------------------------------------------
+  headmsg 'Recall to...'
+  headmsg runebookname[0]
+  headmsg runebookposition[0]
+  headmsg gumpid[0]
+  pause 1000
+  useobject woodrunebook[0]
+  waitforgump 0x554b87f3 5000
+  replygump 0x554b87f3 gumpid[0]
+  pause 3000
+  ////////////////////////////////////////////////////////////////////////////
+  //tree chopping //////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  //---------------------------------------------------------
+  //wack tree 1
+  //---------------------------------------------------------
+  while not @injournal 'no more wood' system
+    equipitem axe 2
+    pause 2000
+    headmsg 'Using Hatchet'
+    @useobject axe
+    waitfortarget 2500
+    headmsg 'Target Tree'
+    //targettilerelative! 'self' 1 'false'
+    //targets 1 tree north
+    targettileoffset! 0 -1 0
+    pause 2000
+  endwhile
+  //---------------------------------------------------------
+  //wack tree 2
+  //---------------------------------------------------------
+  //
+  //place extra trees here
+  headmsg 'tree 2'
+  //
+  //---------------------------------------------------------
+  //bumps list forward and clears journal
+  //---------------------------------------------------------
+  poplist woodrunebook front
+  poplist runebookname front
+  clearjournal
+  pause 2000
+endfor
+////////////////////////////////////////////////////////////////////////////
+//Final Steps //////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//recall back and dump logs
+//---------------------------------------------------------
+//weight check
+//---------------------------------------------------------
+if diffweight < 30
+  //mana check
+  while not mana > 11
+    headmsg 'Waiting for mana'
+    useskill meditation
+    pause 5000
+  endwhile
+  //---------------------------------------------------------
+  //recalls home
+  //---------------------------------------------------------
+  useobject homerunebook
+  waitforgump 0x554b87f3 5000
+  replygump 0x554b87f3 5
+  pause 3000
+  //---------------------------------------------------------
+  //dumps wood
+  //---------------------------------------------------------
+  headmsg 'Dumping wood' 45
+  while @findtype 0x1bdd any backpack
+    @moveitem found woodchest
+    waitforcontents woodchest 3000
+  endwhile
+  headmsg 'Done moving wood'
+  //---------------------------------------------------------
+  //restocks regs
+  //---------------------------------------------------------
+  pause 2000
+  headmsg 'Restocking regs' 45
+  if @counttype 0xf86 any backpack < 5
+    headmsg 'moving mandrake'
+    movetype 0xf86 regs backpack 0 0 0 any 25
+    pause 1000
+  endif
+  if @counttype 0xf7a any backpack < 5
+    headmsg 'moving black pearl'
+    movetype 0xf7a regs backpack 0 0 0 any 25
+    pause 1000
+  endif
+  if @counttype 0xf7b any backpack < 5
+    headmsg 'moving bloodmoss'
+    movetype 0xf7b regs backpack 0 0 0 any 25
+    pause 1000
+  endif
+endif
+////////////////////////////////////////////////

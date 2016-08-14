@@ -1,0 +1,242 @@
+//////////////////////////////////////////////////////////////////////////////
+//ETC Barbed Suit Crafter Wyntr 2016//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//Info:
+//Crafts suits depending on how many bags are in armorbag
+//Not marked
+//Hides and crafts with beetle
+//Dye color 763
+//Preparation:
+//Leather for armor type you are making
+//A bag in your backpack with bags in it for however many suits you want to
+//make
+//A bag on your beetle
+//Dyes and dye tub in your backpack
+//Sewing kits
+//Only have leather on your beetle that you plan on crafting with or it will
+//grab the wrong leather
+//Sometimes the beetle context menu has to be adjusted see line 54
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//hides
+if not hidden self
+  useskill hiding
+endif
+pause 1000
+////////////////////////////////////////////////
+//checking for the bag that will hold all the armor bags
+while not @findobject armorbags
+  headmsg 'Select bag in backpack that holds armor bags'
+  promptalias armorbags
+endwhile
+//makes sure there are bags in the armorbags bag
+if @counttype 0xe76 any armorbags < 1
+  headmsg 'No armor bags!
+  stop
+endif
+//dismounts
+if mounted self
+  useobject self
+  pause 1000
+endif
+//checks for a beetle
+while not @findobject beetle
+  headmsg 'Select your beetle'
+  promptalias beetle
+endwhile
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//opens beetles bag
+//sometimes this needs to be adjusted depending on if the beetle has been friended to someone
+//use a blank macro and record youself using the context menu to open the backpack on your beetle
+//whatever number that is after the serial number replace
+// the 9 below with the one from your beetle
+waitforcontext beetle 9 15000
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+//checks for the bag that will hold the finished product
+while not @findobject tenbag
+  headmsg 'Select bag on beetle to hold final product'
+  promptalias tenbag
+endwhile
+pause 1000
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//sets up the gump to be on the correct page for leather and sets it to not mark
+headmsg 'Configuring Gump'
+@usetype 0xf9d any backpack
+waitforgump 0x38920abd 15000
+replygump 0x38920abd 36
+waitforgump 0x38920abd 15000
+pause 1000
+//checks for mark item and turns it off
+if @ingump 0x38920abd 'MARK ITEM'
+  replygump 0x38920abd 49
+  waitforgump 0x38920abd 15000
+endif
+//checks for the different types of leather and changes to craft whatever you are carrying in yout beetle
+//barbed
+if @findtype 0x1081 1437 beetle
+  replygump 0x38920abd 7
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 27
+  waitforgump 0x38920abd 15000
+endif
+//horned
+if @findtype 0x1081 2304 beetle
+  replygump 0x38920abd 7
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 20
+  waitforgump 0x38920abd 15000
+endif
+//spined
+if @findtype 0x1081 1508 beetle
+  replygump 0x38920abd 7
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 13
+  waitforgump 0x38920abd 15000
+endif
+//regular leather
+if @findtype 0x1081 0 beetle
+  replygump 0x38920abd 7
+  waitforgump 0x38920abd 15000
+  replygump 0x38920abd 6
+  waitforgump 0x38920abd 15000
+endif
+//closes gump
+replygump 0x38920abd 0
+pause 1000
+/////////////////////////////////////////////////
+///////////////////////////////////////////////////
+//begins the list can be changed to other types of armor
+while @findtype 0xe76 any armorbags
+  if not listexists armorid
+    @createlist armorid
+  endif
+  @clearlist armorid
+  pushlist armorid 0x13c7
+  pushlist armorid 0x1db9
+  pushlist armorid 0x13c6
+  pushlist armorid 0x13cd
+  pushlist armorid 0x13cb
+  pushlist armorid 0x13cc
+  /////////////////////////////////////
+  if not listexists armorpiece
+    @createlist armorpiece
+  endif
+  @clearlist armorpiece
+  pushlist armorpiece 2
+  pushlist armorpiece 9
+  pushlist armorpiece 16
+  pushlist armorpiece 23
+  pushlist armorpiece 30
+  pushlist armorpiece 37
+  ////////////////////////////////////////////
+  if not listexists armorname
+    @createlist armorname
+  endif
+  @clearlist armorname
+  pushlist armorname Gorget
+  pushlist armorname Cap
+  pushlist armorname Gloves
+  pushlist armorname Sleeves
+  pushlist armorname Leggings
+  pushlist armorname Tunic
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  //sewing kit check
+  if not @findtype 0xf9d any backpack
+    headmsg 'Out of sewing kits'
+    stop
+  endif
+  //////////////////////////////////////////////////////////
+  //checks for leather this would be the id to change for ingots
+  if @counttype 0x1081 any backpack < 40
+    headmsg 'Restocking Leather'
+    @useobject self
+    pause 1000
+    waitforcontext beetle 9 15000
+    @movetype 0x1081 beetle backpack 0 0 0 any 40
+    pause 2000
+    useobject beetle
+    pause 1000
+  endif
+  ///////////////////////////////////////////////////////
+  //opens armorbags bag and then will find an unused bag and dye it
+  useobject armorbags
+  pause 2000
+  if @findtype 0xe76 any armorbags
+    @setalias armorbag found
+    //763 elvins
+    //1437
+    if @findtype 0xfa9 any backpack
+      @setalias dyes found
+    else
+      headmsg 'No Dye!'
+      stop
+    endif
+    if @findtype 0xfab any backpack
+      @setalias tub found
+    else
+      headmsg 'No Dye Tub!'
+      stop
+    endif
+    //dye color
+    autocolorpick 763
+    useobject! dyes
+    waitfortarget 1000
+    target! tub
+    pause 1000
+    useobject tub
+    waitfortarget 5000
+    target! armorbag
+    pause 1000
+  else
+    headmsg 'No More Armor Bags'
+    stop
+  endif
+  /////////////////////////////////////
+  //opens the current armorbag
+  useobject armorbag
+  pause 2000
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // the magic crafts one of each type of armor piece and sorts it into an armor bag
+  for 0 to armorpiece
+    sysmsg 'Making' 23
+    sysmsg armorname[0] 55
+    @usetype 0xf9d any backpack
+    waitforgump 0x38920abd 5000
+    replygump 0x38920abd armorpiece[]
+    waitforgump 0x38920abd 5000
+    pause 2000
+    ////////////////////////////k///////////////////////
+    for 0 to armorid
+      if @findtype armorid[] any backpack
+        sysmsg 'Moving' 32
+        sysmsg armorname[0] 55
+        moveitem found armorbag
+        pause 3000
+        ignoreobject found
+      endif
+    endfor
+    poplist armorname front
+  endfor
+  /////////////////////////////////////////////////////////////////////////////  /////////////////////////////////////////////////////////////////////////////
+  //last dismount and move compeleted armor bag into the armor bag on the beetle
+  if mounted self
+    useobject self
+    pause 1000
+  endif
+  moveitem armorbag tenbag
+  pause 2000
+  useobject beetle
+  pause 1000
+  ignoreobject armorbag
+  headmsg 'Suit Complete' 55
+  playsound 25
+  pause 2000
+endwhile
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+headmsg 'All Suits Crafted'
+playsound 24
