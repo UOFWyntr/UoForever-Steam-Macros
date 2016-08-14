@@ -5,9 +5,26 @@ while not @findobject 'master runebook' any backpack
   headmsg 'Select Bod Master Runebook'
   promptalias 'master runebook'
 endwhile
-while not @findobject 'bodbook' any backpack
-  headmsg 'Select Bod Book'
-  promptalias 'bodbook'
+while not @findobject 'tailorbodbook' any backpack
+  headmsg 'Select Tailor Bod Book'
+  promptalias 'tailorbodbook'
+endwhile
+while not @findobject 'smithbodbook' any backpack
+  headmsg 'Select Smith Bod Book'
+  promptalias 'smithbodbook'
+endwhile
+//----------------------------------------------------
+//Loose bod cleanup
+//----------------------------------------------------
+//tailor bods
+while @findtype 0x14ef 1155 backpack
+  @moveitem found tailorbodbook
+  pause 1000
+endwhile
+//smith bods
+while @findtype 0x14ef 1102 backpack
+  @moveitem found smithbodbook
+  pause 1000
 endwhile
 //----------------------------------------------------
 //Timer check
@@ -25,21 +42,42 @@ if timerexists bods
     removetimer bods
   endif
 endif
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------
 //Recall to tailor
+//----------------------------------------------------
 @useobject 'master runebook'
 waitforgump 0x554b87f3 5000
 replygump 0x554b87f3 29
 pause 4000
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//tailor
+//----------------------------------------------------
+//Search for tailor
+//----------------------------------------------------
 while not @findobject tailor
   headmsg 'Select tailor'
   promptalias tailor
   pause 2000
 endwhile
+//----------------------------------------------------
+//Confirm bod is available
+//----------------------------------------------------
+if @findobject tailor
+  headmsg 'Checking if bod is available'
+  waitforcontext tailor 1
+  pause 2000
+  while not @injournal 'may get an order' system
+    headmsg 'Bod unavailable'
+    pause 60000
+    waitforcontext tailor 1
+    pause 2000
+    if @injournal 'may get an order' system
+      headmsg 'You can get a bod now'
+      break
+    endif
+  endwhile
+endif
+//----------------------------------------------------
+//Sell to tailor
+//----------------------------------------------------
 if @findobject tailor
   headmsg 'Tailor found'
   clearjournal
@@ -76,22 +114,48 @@ if @findobject tailor
   endwhile
   //bod gump
 endif
+headmsg 'Moving tailor bod to book'
+while @findtype 0x14ef 1155 backpack
+  @moveitem found tailorbodbook
+  pause 1000
+endwhile
 headmsg 'Tailor Bod Done' 69
-/////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-//recall to smith
+//----------------------------------------------------
+//Recall to smith
+//----------------------------------------------------
 @useobject 'master runebook'
 waitforgump 0x554b87f3 5000
 replygump 0x554b87f3 35
 pause 4000
-/////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-//blacksmith
+//----------------------------------------------------
+//Search for smith
+//----------------------------------------------------
 while not @findobject blacksmith
   headmsg 'Select blacksmith'
   promptalias blacksmith
   pause 2000
 endwhile
+//----------------------------------------------------
+//Confirm bod is available
+//----------------------------------------------------
+if @findobject blacksmith
+  headmsg 'Checking if bod is available'
+  waitforcontext tailor 1
+  pause 2000
+  while not @injournal 'may get an order' system
+    headmsg 'Bod unavailable'
+    pause 60000
+    waitforcontext tailor 1
+    pause 2000
+    if @injournal 'may get an order' system
+      headmsg 'You can get a bod now'
+      break
+    endif
+  endwhile
+endif
+//----------------------------------------------------
+//Sell to smith
+//----------------------------------------------------
 if @findobject blacksmith
   headmsg 'Smith found'
   clearjournal
@@ -127,10 +191,15 @@ if @findobject blacksmith
     pause 1000
   endwhile
 endif
+headmsg 'Moving smith bod to book'
+while @findtype 0x14ef 1102 backpack
+  @moveitem found smithbodbook
+  pause 1000
+endwhile
 headmsg 'Blacksmith Bod Done' 55
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//recall brit bank door
+//----------------------------------------------------
+//Recall to brit bank door
+//----------------------------------------------------
 @useobject 'master runebook'
 waitforgump 0x554b87f3 5000
 replygump 0x554b87f3 41
@@ -141,9 +210,9 @@ turn north
 walk north
 walk north
 walk north
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//timer creation
+//----------------------------------------------------
+//Create 5 hour timer
+//----------------------------------------------------
 if not timerexists bods
   @createtimer bods
 endif
