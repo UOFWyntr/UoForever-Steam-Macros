@@ -322,3 +322,7 @@ while @findtype 0xe9b 'any' 'backpack'
 endwhile
 //
 headmsg 'ALL DONE!!'
+if findobject
+if findobject 
+endif
+endif
