@@ -1,2 +1,2 @@
 # Uoforever-Steam-Macros
-Uosteam macros for Uoforever.
+Any script found in master is a fully functioning version of the script. 
