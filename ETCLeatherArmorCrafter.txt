@@ -74,7 +74,7 @@ if @ingump 0x38920abd 'MARK ITEM'
   replygump 0x38920abd 49
   waitforgump 0x38920abd 15000
 endif
-//checks for the different types of leather and changes to craft whatever you are carrying in yout beetle
+//checks for the different types of leather and changes to craft whatever you are carrying in your beetle
 //barbed
 if @findtype 0x1081 1437 beetle
   replygump 0x38920abd 7
@@ -150,7 +150,7 @@ while @findtype 0xe76 any armorbags
     stop
   endif
   //////////////////////////////////////////////////////////
-  //checks for leather this would be the id to change for ingots
+  //checks for leather this would be the
   if @counttype 0x1081 any backpack < 40
     headmsg 'Restocking Leather'
     @useobject self
@@ -167,8 +167,6 @@ while @findtype 0xe76 any armorbags
   pause 2000
   if @findtype 0xe76 any armorbags
     @setalias armorbag found
-    //763 elvins
-    //1437
     if @findtype 0xfa9 any backpack
       @setalias dyes found
     else
@@ -199,8 +197,8 @@ while @findtype 0xe76 any armorbags
   //opens the current armorbag
   useobject armorbag
   pause 2000
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // the magic crafts one of each type of armor piece and sorts it into an armor bag
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //crafts one of each type of armor piece and sorts it into an armor bag
   for 0 to armorpiece
     sysmsg 'Making' 23
     sysmsg armorname[0] 55
@@ -209,7 +207,7 @@ while @findtype 0xe76 any armorbags
     replygump 0x38920abd armorpiece[]
     waitforgump 0x38920abd 5000
     pause 2000
-    ////////////////////////////k///////////////////////
+    ///////////////////////////////////////////////////
     for 0 to armorid
       if @findtype armorid[] any backpack
         sysmsg 'Moving' 32
