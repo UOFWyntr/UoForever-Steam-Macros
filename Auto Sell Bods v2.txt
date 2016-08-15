@@ -61,25 +61,29 @@ endwhile
 //Confirm bod is available
 //----------------------------------------------------
 if @findobject tailor
+  headmsg 'Tailor found'
   headmsg 'Checking if bod is available'
-  waitforcontext tailor 1
+  waitforcontext tailor 1 5000
   pause 2000
-  while not @injournal 'may get an order' system
-    headmsg 'Bod unavailable'
+  while not @injournal 'can get an order' system
+    headmsg 'Bod Unavailable'
     pause 60000
-    waitforcontext tailor 1
+    waitforcontext tailor 1 5000
     pause 2000
-    if @injournal 'may get an order' system
+    if @injournal 'can get an order' system
       headmsg 'You can get a bod now'
       break
     endif
   endwhile
+  headmsg 'Bod Available'
+else
+  headmsg 'Tailor not found'
+  stop
 endif
 //----------------------------------------------------
 //Sell to tailor
 //----------------------------------------------------
 if @findobject tailor
-  headmsg 'Tailor found'
   clearjournal
   while not @findtype 0x14ef 1155 backpack
     if @findtype 0xf9d any backpack
@@ -119,6 +123,9 @@ while @findtype 0x14ef 1155 backpack
   @moveitem found tailorbodbook
   pause 1000
 endwhile
+waitforgump 0x54f555df 5000
+replygump 0x54f555df 0
+pause 1000
 headmsg 'Tailor Bod Done' 69
 //----------------------------------------------------
 //Recall to smith
@@ -139,25 +146,29 @@ endwhile
 //Confirm bod is available
 //----------------------------------------------------
 if @findobject blacksmith
+  headmsg 'Smith found'
   headmsg 'Checking if bod is available'
-  waitforcontext tailor 1
+  waitforcontext blacksmith 1 5000
   pause 2000
-  while not @injournal 'may get an order' system
-    headmsg 'Bod unavailable'
+  while not @injournal 'can get an order' system
+    headmsg 'Bod Unavailable'
     pause 60000
-    waitforcontext tailor 1
+    waitforcontext blacksmith 1 5000
     pause 2000
-    if @injournal 'may get an order' system
+    if @injournal 'can get an order' system
       headmsg 'You can get a bod now'
       break
     endif
   endwhile
+  headmsg 'Bod Available'
+else
+  headmsg 'Blacksmith not found'
+  stop
 endif
 //----------------------------------------------------
 //Sell to smith
 //----------------------------------------------------
 if @findobject blacksmith
-  headmsg 'Smith found'
   clearjournal
   while not @findtype 0x14ef 1102 backpack
     if @findtype 0x1bf2 any backpack
@@ -196,6 +207,9 @@ while @findtype 0x14ef 1102 backpack
   @moveitem found smithbodbook
   pause 1000
 endwhile
+waitforgump 0x54f555df 5000
+replygump 0x54f555df 0
+pause 1000
 headmsg 'Blacksmith Bod Done' 55
 //----------------------------------------------------
 //Recall to brit bank door
