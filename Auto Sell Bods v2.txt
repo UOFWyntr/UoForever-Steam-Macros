@@ -1,18 +1,28 @@
 //----------------------------------------------------
+//Tailor and smith alias setup
+//----------------------------------------------------
+//taffy
+@setalias tailor 0x60800
+//aldrick
+@setalias blacksmith 0x29397
+//----------------------------------------------------
 //Config
 //----------------------------------------------------
 while not @findobject 'bodrunebook' any backpack
   headmsg 'Select Bod Runebook'
   promptalias 'bodrunebook'
 endwhile
+pause 1000
 while not @findobject 'tailorbodbook' any backpack
   headmsg 'Select Tailor Bod Book'
   promptalias 'tailorbodbook'
 endwhile
+pause 1000
 while not @findobject 'smithbodbook' any backpack
   headmsg 'Select Smith Bod Book'
   promptalias 'smithbodbook'
 endwhile
+pause 1000
 //----------------------------------------------------
 //Loose bod cleanup
 //----------------------------------------------------
