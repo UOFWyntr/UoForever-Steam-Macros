@@ -1,9 +1,9 @@
 //----------------------------------------------------
 //Config
 //----------------------------------------------------
-while not @findobject 'master runebook' any backpack
-  headmsg 'Select Bod Master Runebook'
-  promptalias 'master runebook'
+while not @findobject 'bodrunebook' any backpack
+  headmsg 'Select Bod Runebook'
+  promptalias 'bodrunebook'
 endwhile
 while not @findobject 'tailorbodbook' any backpack
   headmsg 'Select Tailor Bod Book'
@@ -45,9 +45,9 @@ endif
 //----------------------------------------------------
 //Recall to tailor
 //----------------------------------------------------
-@useobject 'master runebook'
+@useobject 'bodrunebook'
 waitforgump 0x554b87f3 5000
-replygump 0x554b87f3 29
+replygump 0x554b87f3 5
 pause 4000
 //----------------------------------------------------
 //Search for tailor
@@ -130,9 +130,9 @@ headmsg 'Tailor Bod Done' 69
 //----------------------------------------------------
 //Recall to smith
 //----------------------------------------------------
-@useobject 'master runebook'
+@useobject 'bodrunebook'
 waitforgump 0x554b87f3 5000
-replygump 0x554b87f3 35
+replygump 0x554b87f3 11
 pause 4000
 //----------------------------------------------------
 //Search for smith
@@ -214,9 +214,9 @@ headmsg 'Blacksmith Bod Done' 55
 //----------------------------------------------------
 //Recall to brit bank door
 //----------------------------------------------------
-@useobject 'master runebook'
+@useobject 'bodrunebook'
 waitforgump 0x554b87f3 5000
-replygump 0x554b87f3 41
+replygump 0x554b87f3 17
 pause 4000
 turn south
 turn south
