@@ -44,11 +44,12 @@ if timerexists bods
   while timer bods < 18240000
     headmsg 'Bod Timer Active' 58
     @timermsg bods 32
-    pause 5000
+    pause 60000
   endwhile
   //once time is up it clears the timer and grabs more bods
   if timer bods > 18240000
     headmsg 'Bod timer is up! Time to get Bods' 32
+    pause 1000
     removetimer bods
   endif
 endif
@@ -245,7 +246,7 @@ pause 500
 while not timer bods > 18240000
   headmsg 'Total time waiting for bod:' 21
   @timermsg bods 32
-  pause 2000
+  pause 60000
 endwhile
 pause 1000
 headmsg 'BOD TIME!'
