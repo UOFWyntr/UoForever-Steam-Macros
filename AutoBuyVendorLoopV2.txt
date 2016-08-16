@@ -1,0 +1,224 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+pause 500
+@unsetalias workingvendor
+pause 500
+while not @findobject magerunebook
+  headmsg 'Select runebook for mage shops' 23
+  promptalias magerunebook
+endwhile
+//----------------------------------------------------
+//Timer check
+//----------------------------------------------------
+if timerexists vendorbuy
+  //stop here while timer is less than 5 hours 4 mins
+  while timer vendorbuy < 3600000
+    sysmsg 'Vendor Buy Timer Active elapsed time:' 58
+    @timermsg vendorbuy 32
+    pause 60000
+  endwhile
+  //once time is up it clears the timer and grabs more bods
+  if timer bods > 3600000
+    headmsg 'Vendor buy timer is up, time to buy' 32
+    pause 1000
+    removetimer vendorbuy
+  endif
+endif
+//----------------------------------------------------
+//Mage shop list
+//----------------------------------------------------
+if not listexists mageshops
+  @createlist mageshops
+endif
+if list mageshops == 0
+  @pushlist 'mageshops' '5'
+  @pushlist 'mageshops' '11'
+  @pushlist 'mageshops' '17'
+  @pushlist 'mageshops' '23'
+  //
+  @pushlist 'mageshops' '29'
+  @pushlist 'mageshops' '35'
+  @pushlist 'mageshops' '41'
+  @pushlist 'mageshops' '47'
+  //
+  @pushlist 'mageshops' '53'
+  @pushlist 'mageshops' '59'
+  @pushlist 'mageshops' '65'
+  @pushlist 'mageshops' '71'
+  //
+  @pushlist 'mageshops' '77'
+  @pushlist 'mageshops' '83'
+  @pushlist 'mageshops' '89'
+  @pushlist 'mageshops' '95'
+endif
+//----------------------------------------------------
+//Vendor list
+//----------------------------------------------------
+if not listexists vendorlist
+  @createlist vendorlist
+endif
+if list vendorlist == 0
+  //Brit Mage Tower 1
+  pushlist vendorlist 0x26d32 //Mage Zena
+  pushlist vendorlist 0x2690f //Mage Kayin
+  pushlist vendorlist 0x26e34 //Mage Alexa
+  pushlist vendorlist 0x26d16 //Alchemist Christina
+  pushlist vendorlist 0xcecf //Herbalist Francine
+  pushlist vendorlist 0x260cb //Scribe Horace
+  //Brit Mage 2
+  pushlist vendorlist 0x2f04b //Mage Arman
+  pushlist vendorlist 0x2f57c //Mage Franklin
+  pushlist vendorlist 0x2f0fc //FortuneTeller Angelo
+  pushlist vendorlist 0x2f0ca //Herbalist Neci
+  pushlist vendorlist 0x2f144 //Scribe Edgar
+  //Brit Alchemist
+  pushlist vendorlist 0x6fd1b //Alchemist Gabrielle
+  pushlist vendorlist 0xe21a8 //Herbalist Areiela
+  //Moonglow Mage 1 (North of Island)
+  pushlist vendorlist 0x161e2 //Mage Geoffrey
+  pushlist vendorlist 0x16612 //Mage Dacie
+  pushlist vendorlist 0x16335 //Mage Nona
+  pushlist vendorlist 0x95fde //Alchemist Whitaker
+  pushlist vendorlist 0x162a5 //Scribe Jenica
+  //Moonglow Mage 2
+  pushlist vendorlist 0x2b325 //Mage Hartley
+  pushlist vendorlist 0x2b1c7 //Mage Dulcie
+  pushlist vendorlist 0x2b242 //Alchemist Norah
+  pushlist vendorlist 0x2b366 //Herbalist Dulcinea
+  //Moonglow Alchemist 1 (North Building)
+  pushlist vendorlist 0x27734 //Mage Spencer
+  pushlist vendorlist 0x1221 //Mage Zaza
+  pushlist vendorlist 0x4cce2 //Alchemist Pemba
+  pushlist vendorlist 0x27873 //Herbalist Alastair
+  //Moonglow Alchemist 2
+  //pushlist vendorlist 0x726 //Mage Leonard
+  //pushlist vendorlist 0xbe24 //Alchemist Taipa
+  //pushlist vendorlist 0x69aeb //Herbalist Robert
+  //pushlist vendorlist 0xabc9e //Scrbe Letha
+  //Maginicia Mage
+  pushlist vendorlist 0xcb425 //Mage Aruna
+  pushlist vendorlist 0xcb58d //Mage Valentina
+  pushlist vendorlist 0x83f9a //Mage Faye
+  pushlist vendorlist 0xcb45b //Alchemist Reuben
+  pushlist vendorlist 0xcb40d //Scribe Tab
+  //Occlo Mage
+  pushlist vendorlist 0x3e866 //Mage Oriel
+  pushlist vendorlist 0x1db //Mage Rhonna
+  pushlist vendorlist 0x3bc0 //Alchemist Alike
+  pushlist vendorlist 0x2f8 //Scribe Ciar
+  //Serpents Hold Mage
+  pushlist vendorlist 0x65e //Mage Milo
+  pushlist vendorlist 0xd64d2 //Herbalist Yervant
+  //Skara Brae Mage 1
+  pushlist vendorlist 0x16ea3 //Mage Takara
+  pushlist vendorlist 0x16dc5 //Mage Burke
+  pushlist vendorlist 0x16da5 //Alchemist Xerxes
+  //Skara Brae Mage 2
+  pushlist vendorlist 0x25dd5 //Mage Admon
+  pushlist vendorlist 0x26945 //Alchemist Hagan
+  pushlist vendorlist 0x26025 //Scribe Uriah
+  //Trinsic Mage
+  pushlist vendorlist 0x7621f //Mage Pearl
+  pushlist vendorlist 0x75f3b //Alchemist Quentin
+  pushlist vendorlist 0x75eba //FortuneTeller Lydia
+  pushlist vendorlist 0x75afb //Herbalist Mindy
+  pushlist vendorlist 0x75b59 //Scribe Aleka
+  //Vesper Mage
+  pushlist vendorlist 0x8a454 //Mage Akasma
+  pushlist vendorlist 0x8a455 //Mage Helaku
+  pushlist vendorlist 0x8a448 //Scribe Deirdre
+  pushlist vendorlist 0x8a447 //Scribe Rufus
+  //Wind Mage 1
+  pushlist vendorlist 0x10b73 //Mage Janice
+  pushlist vendorlist 0x108af //Mage Malinda
+  pushlist vendorlist 0x108fd //Herbalist Airlia
+  //Wind Mage 2
+  pushlist vendorlist 0x2a6cc //Mage Aquene
+  pushlist vendorlist 0x29ef8 //Mage Jun
+  //Wind Mage 3
+  pushlist vendorlist 0x3450d //Mage Brendon
+  pushlist vendorlist 0x348af //Mage Rosemary
+  pushlist vendorlist 0x343f3 //Mage Prescot
+  pushlist vendorlist 0x34cc1 //Alchemist Aurilia
+  pushlist vendorlist 0x35083 //Alchemist Kaula
+  pushlist vendorlist 0x7474f //Scribe Audrianna
+endif
+//----------------------------------------------------
+//Recall to mage shops
+//----------------------------------------------------
+pause 500
+headmsg 'Recalling to the next mage shop' 23
+@useobject magerunebook
+waitforgump 0x554b87f3 3000
+replygump 0x554b87f3 mageshops[0]
+pause 4000
+poplist mageshops front
+//----------------------------------------------------
+//Buy from workingvendor
+//----------------------------------------------------
+for 0 to vendorlist
+  if @findobject vendorlist[] any world 1 24
+    pause 500
+    @setalias workingvendor found
+    pause 500
+    //----------------------------------------------------
+    //Walk till in range of workingvendor
+    //----------------------------------------------------
+    //if @findobject workingvendor any world 1 24
+    while not @inrange 'workingvendor' 7
+      headmsg 'Get close' 23
+      if @x 'workingvendor' > x 'self' and @y 'workingvendor' > y 'self'
+        walk 'Southeast'
+      elseif @x 'workingvendor' < x 'self' and @y 'workingvendor' > y 'self'
+        walk 'Southwest'
+      elseif @x 'workingvendor' > x 'self' and @y 'workingvendor' < y 'self'
+        walk 'Northeast'
+      elseif @x 'workingvendor' < x 'self' and @y 'workingvendor' < y 'self'
+        walk 'Northwest'
+      elseif @x 'workingvendor' > x 'self' and @y 'workingvendor' == y 'self'
+        walk 'East'
+      elseif @x 'workingvendor' < x 'self' and @y 'workingvendor' == y 'self'
+        walk 'West'
+      elseif @x 'workingvendor' == x 'self' and @y 'workingvendor' > y 'self'
+        walk 'South'
+      elseif @x 'workingvendor' == x 'self' and @y 'workingvendor' < y 'self'
+        walk 'North'
+      endif
+    endwhile
+    // endif
+    //----------------------------------------------------
+    //Purchase
+    //----------------------------------------------------
+    headmsg 'Purchasing' 23 vendorlist[]
+    headmsg vendorlist[] 23 vendorlist[]
+    pause 500
+    waitforcontext workingvendor 1 5000
+    pause 1000
+  endif
+endfor
+//----------------------------------------------------
+//Shutdown
+//----------------------------------------------------
+if list mageshops == 0
+  headmsg 'Done'
+  //----------------------------------------------------
+  //Create 1 hour timer
+  //----------------------------------------------------
+  if not timerexists vendorbuy
+    @createtimer vendorbuy
+  endif
+  pause 500
+  //hangs here until timer reachers 5 hours 4 mins
+  while not timer vendorbuy > 3600000
+    sysmsg 'Total time waiting for vendor buy timer:' 21
+    @timermsg vendorbuy 32
+    pause 60000
+  endwhile
+  pause 1000
+  headmsg 'Time to buy'
+  playsound f_hey.wav
+  pause 1000
+  replay
+endif
+replay
