@@ -14,17 +14,10 @@
 //A bag on your beetle
 //Dyes and dye tub in your backpack
 //Sewing kits
-//Only have leather on your beetle that you plan on crafting with or it will
-//grab the wrong leather
-//Sometimes the beetle context menu has to be adjusted see line 54
 ///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-//hides
-if not hidden self
-  useskill hiding
-endif
-pause 1000
-////////////////////////////////////////////////
+//----------------------------------------------------
+//Config bags and beetle
+//----------------------------------------------------
 //checking for the bag that will hold all the armor bags
 while not @findobject armorbags
   headmsg 'Select bag in backpack that holds armor bags'
@@ -49,23 +42,16 @@ while not @findobject beetle
   headmsg 'Select your beetle'
   promptalias beetle
 endwhile
-//////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-//opens beetles bag
-//sometimes this needs to be adjusted depending on if the beetle has been friended to someone
-//use a blank macro and record youself using the context menu to open the backpack on your beetle
-//whatever number that is after the serial number replace
-// the 9 below with the one from your beetle
-waitforcontext beetle 9 15000
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------
+//Config gumps
+//----------------------------------------------------
+waitforcontext beetle 10 15000
 //checks for the bag that will hold the finished product
 while not @findobject tenbag
   headmsg 'Select bag on beetle to hold final product'
   promptalias tenbag
 endwhile
 pause 1000
-//////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //sets up the gump to be on the correct page for leather and sets it to not mark
 headmsg 'Configuring Gump'
@@ -107,18 +93,23 @@ endif
 replygump 0x38920abd 0
 pause 1000
 // configure smith gump
-@usetype 0xfbb any backpack
-waitforgump 0x38920abd 15000
-replygump 0x38920abd 22
-waitforgump 0x38920abd 15000
-pause 1000
-if @findtype 0x1bf2 1348 beetle
-  replygump 0x38920abd 7
+//dont do
+if dead self
+  @usetype 0xfbb any backpack
   waitforgump 0x38920abd 15000
-  replygump 0x38920abd 62
+  replygump 0x38920abd 22
   waitforgump 0x38920abd 15000
+  pause 1000
+  if @findtype 0x1bf2 1348 beetle
+    replygump 0x38920abd 7
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 62
+    waitforgump 0x38920abd 15000
+  endif
+  replygump 0x38920abd 0
 endif
-replygump 0x38920abd 0
+pause 1000
+useobject beetle
 pause 1000
 headmsg 'Setting up armor bag'
 /////////////////////////////////////////////////
@@ -130,23 +121,23 @@ while @findtype 0xe76 any armorbags
     stop
   endif
   //////////////////////////////////////////////////////////
-  //checks for leather and bones this would be the id to change for ingots
-  if @counttype 0x1081 any backpack < 50
+  //checks for leather and bones
+  if @counttype 0x1081 any backpack < 60
     headmsg 'Restocking Leather'
     @useobject self
     pause 1000
-    waitforcontext beetle 9 15000
-    @movetype 0x1081 beetle backpack 0 0 0 any 50
+    waitforcontext beetle 10 15000
+    @movetype 0x1081 beetle backpack 0 0 0 any 60
     pause 2000
     useobject beetle
     pause 1000
   endif
-  if @counttype 0xf7e any backpack < 30
+  if @counttype 0xf7e any backpack < 50
     headmsg 'Restocking Bones'
     @useobject self
     pause 1000
-    waitforcontext beetle 9 15000
-    @movetype 0xf7e beetle backpack 0 0 0 any 30
+    waitforcontext beetle 10 15000
+    @movetype 0xf7e beetle backpack 0 0 0 any 50
     pause 2000
     useobject beetle
     pause 1000
@@ -189,8 +180,7 @@ while @findtype 0xe76 any armorbags
   //opens the current armorbag
   useobject armorbag
   pause 2000
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
   //cap
   headmsg 'Bone Helmet'
   while not @findtype 0x1451 any backpack
@@ -202,13 +192,14 @@ while @findtype 0xe76 any armorbags
     if @ingump 0x38920abd 'You create the item'
       if @findtype 0x1451 any backpack
         moveitem found trash
+        pause 1000
       endif
       pause 1500
     endif
   endwhile
   if @findtype 0x1451 any backpack
     moveitem found armorbag
-    ignoreobject found
+    //ignoreobject found
     pause 1000
   endif
   ///////////////////////////////////////////
@@ -223,13 +214,14 @@ while @findtype 0xe76 any armorbags
     if @ingump 0x38920abd 'You create the item'
       if @findtype 0x1450 any backpack
         moveitem found trash
+        pause 1000
       endif
       pause 1500
     endif
   endwhile
   if @findtype 0x1450 any backpack
     moveitem found armorbag
-    ignoreobject found
+    // ignoreobject found
     pause 1000
   endif
   ///////////////////////////////////////////
@@ -242,15 +234,16 @@ while @findtype 0xe76 any armorbags
     waitforgump 0x38920abd 15000
     pause 2000
     if @ingump 0x38920abd 'You create the item'
-      if @findtype0x144e any backpack
+      if @findtype 0x144e any backpack
         moveitem found trash
+        pause 1000
       endif
       pause 1500
     endif
   endwhile
   if @findtype 0x144e any backpack
     moveitem found armorbag
-    ignoreobject found
+    //ignoreobject found
     pause 1000
   endif
   ///////////////////////////////////////////
@@ -265,13 +258,14 @@ while @findtype 0xe76 any armorbags
     if @ingump 0x38920abd 'You create the item'
       if @findtype 0x1452 any backpack
         moveitem found trash
+        pause 1000
       endif
       pause 1500
     endif
   endwhile
   if @findtype 0x1452 any backpack
     moveitem found armorbag
-    ignoreobject found
+    //ignoreobject found
     pause 1000
   endif
   //////////////////////////////////////////////////
@@ -286,62 +280,66 @@ while @findtype 0xe76 any armorbags
     if @ingump 0x38920abd 'You create the item'
       if @findtype 0x144f any backpack
         moveitem found trash
+        pause 1000
       endif
       pause 1500
     endif
   endwhile
   if @findtype 0x144f any backpack
     moveitem found armorbag
-    ignoreobject found
+    //ignoreobject found
     pause 1000
   endif
   //////////////////////////////////////
   //gorget
-  if @counttype 0x1bf2 any backpack < 6
-    headmsg 'Restocking Ingots'
-    @useobject self
-    pause 1000
-    waitforcontext beetle 9 15000
-    @movetype 0x1bf2 beetle backpack 0 0 0 any 6
-    pause 2000
-    useobject beetle
-    pause 1000
-  endif
-  headmsg 'Platemail Gorget'
-  while not @findtype 0x1413 any backpack
-    @usetype 0xfbb any backpack
-    waitforgump 0x38920abd 15000
-    replygump 0x38920abd 22
-    waitforgump 0x38920abd 15000
-    replygump 0x38920abd 16
-    waitforgump 0x38920abd 15000
-    pause 2000
-    if @ingump 0x38920abd 'You create the item'
-      headmsg 'Smelting' 55
+  //dont craft
+  if dead self
+    if @counttype 0x1bf2 any backpack < 6
+      headmsg 'Restocking Ingots'
+      @useobject self
+      pause 1000
+      waitforcontext beetle 10 15000
+      @movetype 0x1bf2 beetle backpack 0 0 0 any 6
+      pause 2000
+      useobject beetle
+      pause 1000
+    endif
+    headmsg 'Platemail Gorget'
+    while not @findtype 0x1413 any backpack
       @usetype 0xfbb any backpack
       waitforgump 0x38920abd 15000
-      replygump 0x38920abd 14
-      waitfortarget 2500
-      if @findtype 0x1413 any backpack
-        target! found
+      replygump 0x38920abd 22
+      waitforgump 0x38920abd 15000
+      replygump 0x38920abd 16
+      waitforgump 0x38920abd 15000
+      pause 2000
+      if @ingump 0x38920abd 'You create the item'
+        headmsg 'Smelting' 55
+        @usetype 0xfbb any backpack
+        waitforgump 0x38920abd 15000
+        replygump 0x38920abd 14
+        waitfortarget 2500
+        if @findtype 0x1413 any backpack
+          target! found
+        endif
+        pause 1500
       endif
-      pause 1500
-    endif
-    waitforgump 0x38920abd 15000
-    if @ingump 0x38920abd 'have no idea how to work'
-      headmsg 'Cannot smelt'
-      moveitem found armorbags
+      waitforgump 0x38920abd 15000
+      if @ingump 0x38920abd 'have no idea how to work'
+        headmsg 'Cannot smelt'
+        moveitem found armorbags
+        pause 1000
+        ignoreobject found
+      endif
+    endwhile
+    if @findtype 0x1413 any backpack
+      moveitem found armorbag
+      //ignoreobject found
       pause 1000
-      ignoreobject found
     endif
-  endwhile
-  if @findtype 0x1413 any backpack
-    moveitem found armorbag
-    ignoreobject found
-    pause 1000
   endif
-  /////////////////////////////////////////////////////////////////////////////  /////////////////////////////////////////////////////////////////////////////
-  //last dismount and move compeleted armor bag into the armor bag on the beetle
+  ///////////////////////////////////////////////////////////////////////////
+  //move compeleted armor bag into the armor bag on the beetle
   if mounted self
     useobject self
     pause 1000
@@ -355,7 +353,5 @@ while @findtype 0xe76 any armorbags
   playsound 25
   pause 2000
 endwhile
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 headmsg 'All Suits Crafted'
 playsound 24
