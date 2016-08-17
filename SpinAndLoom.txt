@@ -1,0 +1,225 @@
+//----------------------------------------------------
+//Spin and Loom ©2015
+//Created by Pepper Potts Jan 2015 for UOForever
+//This macro will restock textile materials from a supply crate to the backpack then turn all materials and products of materials into bolts of cloth. This macro will use 1 of each material (cotton, wool, flaxtype1 and flaxtype2) and generate roughly 4 bolts of cloth. Once the script completes the bolts will be placed into the product crate.
+//Note: This script is meant to be ran from your house with a loom, spinning wheel, a supply container and product container within 1 tile.
+//To use: Simply copy into a macro check, loop and run. You will need two containers, a loom and a spinning wheel. If you want to run this script manually then enter the serials for your supply crate, product crate, the loom, and the spinning wheel. You can run with or without loop on. Without loop on the script will run once just like normal. With loop on it will run forever. The script just loops once there is no more materials in the supply crate. One simply has to put the materials into the supply crate and sit back and relax.
+//----------------------------------------------------
+//This is the beginning of the advanced setalias prompt. If the alias` have never been set before then the script will prompt you to target them. Once they are stored the script will find the same targets that you selected. If you ever want it to reprompt you go to the macro and and then go to active objects. Lastly remove the alias` supply, product, spin, and loom by left clicking on them and clicking remove.
+//------------------
+//setalias for the supply crate
+if not findalias supply
+  sysmsg 'Please choose a supply container...' 53
+  promptalias supply
+else
+  sysmsg 'Supply container already set!' 73
+endif
+//------------------
+//setalias for product crate
+if not findalias product
+  sysmsg 'Please choose a product container...' 53
+  promptalias product
+else
+  sysmsg 'Product container already set!' 73
+endif
+//------------------
+//setalias for spinning wheel
+if not @findobject spin
+  sysmsg 'Please choose a spinning wheel...' 53
+  promptalias spin
+else
+  sysmsg 'The spinning wheel is already set!' 73
+endif
+//------------------
+//setalias for loom
+if not @findobject loom
+  sysmsg 'Please choose a loom...' 53
+  promptalias loom
+else
+  sysmsg 'The loom is already set!' 73
+endif
+//opens supply crate and checks for mats
+@useobject supply
+//This is the manual set alias area. Simply delete the advanced alias prompt code above and then remove the forward slashes infront of @setalias` below. Once that is complete you can use the object inspector button to find your particular serials. The object inspector will prompt you with a target, click your supply container. A table window will pop up that will show the serial. Copy the serial to (serial) inside of the command //@setalias supply (serial). An example: //@setalias supply 0x401dac8f The serial must match exactly and does not need the parenthesis. If you use this method anytime you want to use different object you would manual come here and change them.
+//Below are the manual alias`
+//----------------------------------------------------
+//@setalias supply (serial)
+//@setalias product (serial)
+//@setalias loom (serial)
+//@setalias spin (serial)
+//----------------------------------------------------
+//advanced restock
+msg 'Restocking...' 73
+pause 500
+//------------------
+//check for wool and restock
+msg 'Looking for Wool...' 53
+if not @findtype 0xdf8 0 backpack 1 1
+  if not @findtype 0xdf8 0 supply 1 1
+    sysmsg 'No Wool!' 37
+  else
+    @movetype 0xdf8 'supply' 'backpack' 65535 65535 0 0x0 1
+    pause 1000
+    sysmsg 'Wool Restocked.' 73
+  endif
+endif
+pause 1000
+//------------------
+//check for cotton and restock
+msg 'Looking for Cotton...' 53
+if not @findtype 0xdf9 0 backpack 1 1
+  if not @findtype 0xdf9 0 supply 1 1
+    sysmsg 'No Cotton!' 37
+  else
+    @movetype 0xdf9 'supply' 'backpack' 65535 65535 0 0x0 1
+    pause 500
+    sysmsg 'Cotton Restocked.' 73
+  endif
+endif
+pause 1000
+//------------------
+//check for flax type 1 and restock
+msg 'Looking for Flax Type 1...' 53
+if not @findtype 0x1a9d 0 backpack 1 1
+  if not @findtype 0x1a9d 0 supply 1 1
+    sysmsg 'No Flax Type 1!' 37
+  else
+    @movetype 0x1a9d 'supply' 'backpack' 65535 65535 0 0x0 1
+    pause 500
+    sysmsg 'Flax Type 1 Restocked.' 73
+  endif
+endif
+pause 1000
+//------------------
+//check for flax type 2 and restock
+msg 'Looking for Flax Type 2...' 53
+if not @findtype 0x1a9c 0 backpack 1 1
+  if not @findtype 0x1a9c 0 supply 1 1
+    sysmsg 'No Flax Type 2!' 37
+  else
+    @movetype 0x1a9c 'supply' 'backpack' 65535 65535 0 0x0 1
+    pause 1000
+    sysmsg 'Flax Type 2 Restocked.' 73
+  endif
+endif
+pause 1000
+msg 'Restock Complete.' 73
+pause 500
+//----------------------------------------------------
+//begin spinning and use all cotton flax and wool
+sysmsg 'Begining to use Spinning Wheel...' 198
+msg 'I Spin Wool' 19
+//------------------
+//look for clean wool and spin it at home
+while @findtype 0xdf8 0 backpack 1 1
+  @usetype 0xdf8 any backpack
+  waitfortarget 2000
+  target! spin
+  pause 3500
+endwhile
+//------------------
+//cotton and spin
+msg 'I Spin Cotton' 19
+while @findtype 0xdf9 0 backpack 1 1
+  @usetype 0xdf9 any backpack
+  waitfortarget 2000
+  target! spin
+  pause 3500
+endwhile
+//------------------
+//flax type a and spin
+msg 'I Spin Flax1' 19
+while @findtype 0x1a9d 0 backpack 1 1
+  @usetype 0x1a9d any backpack
+  waitfortarget 2000
+  target! spin
+  pause 3500
+endwhile
+//------------------
+//flax type b and spin
+msg 'I Spin Flax2' 19
+while @findtype 0x1a9c 0 backpack 1 1
+  @usetype 0x1a9c any backpack
+  waitfortarget 2000
+  target! spin
+  pause 3500
+endwhile
+sysmsg 'Spinning Wheel Finished.' 198
+//----------------------------------------------------
+//beging using the loom and use all types of thread
+sysmsg 'Begining to use Loom...' 198
+//------------------
+//use all of the thread spools
+msg 'I Loom Thread' 19
+while @findtype 0xfa0 0 backpack 1 3
+  @usetype 0xfa0 any backpack 1
+  waitfortarget 2000
+  target! loom
+  pause 500
+endwhile
+//------------------
+//use all of the balls of yarn
+msg 'I Loom Yarn' 19
+while @findtype 0xe1d 0 backpack 1 3
+  @usetype 0xe1d any backpack 1
+  waitfortarget 2000
+  target! loom
+  pause 500
+endwhile
+sysmsg 'Loom Finished.' 198
+//----------------------------------------------------
+//move bolts of cloth from backpack to product crate
+sysmsg 'Moving all bolts of cloth to product crate...' 198
+pause 500
+@movetype 0xf95 'backpack' 'product'
+msg 'Done!'
+pause 500
+//check to see if backpack and supply crate is empty if they are start over
+//script will remain in loop here until something is placed into the supply container
+while not @findtype 0xdf8 0 backpack 1 1 or @findtype 0xdf9 0 backpack 1 1 or @findtype 0x1a9d 0 backpack 1 1 or @findtype 0x1a9c 0 backpack 1 1 or @findtype 0xdf8 0 supply 1 1 or @findtype 0xdf9 0 supply 1 1 or @findtype 0x1a9d 0 supply 1 1 or @findtype 0x1a9c 0 supply 1 1 or @findtype 0xfa0 0 backpack 1 1 or @findtype 0xe1d 0 backpack 1 1 or @findtype 0xf95 0 backpack 1 1
+  if @findtype 0xdf8 0 backpack 1 1
+    sysmsg 'Thanks for the wool!'
+    break
+  endif
+  if @findtype 0xdf9 0 backpack 1 1
+    sysmsg 'Thanks for the cotton!'
+    break
+  endif
+  if @findtype 0x1a9d 0 backpack 1 1
+    sysmsg 'Thanks for the Flax Type 1'
+    break
+  endif
+  if @findtype 0x1a9c 0 backpack 1 1
+    sysmsg 'Thanks for the Flax Type 2'
+    break
+  endif
+  if @findtype 0xdf8 0 supply 1 1
+    sysmsg 'Thanks for the wool!'
+    break
+  endif
+  if @findtype 0xdf9 0 supply 1 1
+    sysmsg 'Thanks for the cotton!'
+    break
+  endif
+  if @findtype 0x1a9d 0 supply 1 1
+    sysmsg 'Thanks for the Flaw Type 1!'
+    break
+  endif
+  if @findtype 0x1a9c 0 supply 1 1
+    sysmsg 'Thanks for the Flax Type 2!'
+    break
+  endif
+  if @findtype 0xfa0 0 backpack 1 1
+    sysmsg 'Thanks for the thread!'
+    break
+  endif
+  if @findtype 0xe1d 0 backpack 1 1
+    sysmsg 'Thanks for the yarn!'
+    break
+  endif
+  if @findtype 0xf95 0 backpack 1 1
+    sysmsg 'Thanks for the Bolt of Cloth!!'
+    break
+  endif
+endwhile
+sysmsg 'end'
