@@ -49,11 +49,11 @@ endif
 //@setalias spin (serial)
 //----------------------------------------------------
 //advanced restock
-msg 'Restocking...' 73
+headmsg 'Restocking...' 73
 pause 500
 //------------------
 //check for wool and restock
-msg 'Looking for Wool...' 53
+headmsg 'Looking for Wool...' 53
 if not @findtype 0xdf8 0 backpack 1 1
   if not @findtype 0xdf8 0 supply 1 1
     sysmsg 'No Wool!' 37
@@ -66,7 +66,7 @@ endif
 pause 1000
 //------------------
 //check for cotton and restock
-msg 'Looking for Cotton...' 53
+headmsg 'Looking for Cotton...' 53
 if not @findtype 0xdf9 0 backpack 1 1
   if not @findtype 0xdf9 0 supply 1 1
     sysmsg 'No Cotton!' 37
@@ -79,7 +79,7 @@ endif
 pause 1000
 //------------------
 //check for flax type 1 and restock
-msg 'Looking for Flax Type 1...' 53
+headmsg 'Looking for Flax Type 1...' 53
 if not @findtype 0x1a9d 0 backpack 1 1
   if not @findtype 0x1a9d 0 supply 1 1
     sysmsg 'No Flax Type 1!' 37
@@ -92,7 +92,7 @@ endif
 pause 1000
 //------------------
 //check for flax type 2 and restock
-msg 'Looking for Flax Type 2...' 53
+headmsg 'Looking for Flax Type 2...' 53
 if not @findtype 0x1a9c 0 backpack 1 1
   if not @findtype 0x1a9c 0 supply 1 1
     sysmsg 'No Flax Type 2!' 37
@@ -103,12 +103,12 @@ if not @findtype 0x1a9c 0 backpack 1 1
   endif
 endif
 pause 1000
-msg 'Restock Complete.' 73
+headmsg 'Restock Complete.' 73
 pause 500
 //----------------------------------------------------
 //begin spinning and use all cotton flax and wool
 sysmsg 'Begining to use Spinning Wheel...' 198
-msg 'I Spin Wool' 19
+headmsg 'I Spin Wool' 19
 //------------------
 //look for clean wool and spin it at home
 while @findtype 0xdf8 0 backpack 1 1
@@ -119,7 +119,7 @@ while @findtype 0xdf8 0 backpack 1 1
 endwhile
 //------------------
 //cotton and spin
-msg 'I Spin Cotton' 19
+headmsg 'I Spin Cotton' 19
 while @findtype 0xdf9 0 backpack 1 1
   @usetype 0xdf9 any backpack
   waitfortarget 2000
@@ -128,7 +128,7 @@ while @findtype 0xdf9 0 backpack 1 1
 endwhile
 //------------------
 //flax type a and spin
-msg 'I Spin Flax1' 19
+headmsg 'I Spin Flax1' 19
 while @findtype 0x1a9d 0 backpack 1 1
   @usetype 0x1a9d any backpack
   waitfortarget 2000
@@ -137,7 +137,7 @@ while @findtype 0x1a9d 0 backpack 1 1
 endwhile
 //------------------
 //flax type b and spin
-msg 'I Spin Flax2' 19
+headmsg 'I Spin Flax2' 19
 while @findtype 0x1a9c 0 backpack 1 1
   @usetype 0x1a9c any backpack
   waitfortarget 2000
@@ -149,8 +149,8 @@ sysmsg 'Spinning Wheel Finished.' 198
 //beging using the loom and use all types of thread
 sysmsg 'Begining to use Loom...' 198
 //------------------
-//use all of the thread spools
-msg 'I Loom Thread' 19
+//use all of the thread spoolsa
+headmsg 'I Loom Thread' 19
 while @findtype 0xfa0 0 backpack 1 3
   @usetype 0xfa0 any backpack 1
   waitfortarget 2000
@@ -159,7 +159,7 @@ while @findtype 0xfa0 0 backpack 1 3
 endwhile
 //------------------
 //use all of the balls of yarn
-msg 'I Loom Yarn' 19
+headmsg 'I Loom Yarn' 19
 while @findtype 0xe1d 0 backpack 1 3
   @usetype 0xe1d any backpack 1
   waitfortarget 2000
@@ -172,7 +172,7 @@ sysmsg 'Loom Finished.' 198
 sysmsg 'Moving all bolts of cloth to product crate...' 198
 pause 500
 @movetype 0xf95 'backpack' 'product'
-msg 'Done!'
+headmsg 'Done!'
 pause 500
 //check to see if backpack and supply crate is empty if they are start over
 //script will remain in loop here until something is placed into the supply container
