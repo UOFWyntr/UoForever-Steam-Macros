@@ -1,0 +1,193 @@
+//--------------------------------------------------------------
+// Bones
+//--------------------------------------------------------------
+while not @findobject bonechest
+  promptalias bonechest
+endwhile
+while not @findobject scissors
+  promptalias scissors
+endwhile
+if not listexists 'bones'
+  createlist 'bones'
+endif
+@clearlist 'bones'
+pushlist 'bones' 0x1b09
+pushlist 'bones' 0x1b0a
+pushlist 'bones' 0x1b0b
+pushlist 'bones' 0x1b0c
+pushlist 'bones' 0x1b0d
+pushlist 'bones' 0x1b0e
+pushlist 'bones' 0x1b0f
+pushlist 'bones' 0x1b10
+pushlist 'bones' 0x1b17
+pushlist 'bones' 0x1b18
+headmsg 'cutting bones' 23
+for 0 to 'bones'
+  while @findtype 'bones[]' 'any' 'backpack'
+    useobject scissors
+    waitfortarget 1000
+    headmsg 'cut' 23 found
+    target! found
+    pause 2000
+  endwhile
+endfor
+while @findtype 0xf7e any backpack
+  headmsg 'moving bones' 23 found
+  moveitem found bonechest
+endwhile
+//--------------------------------------------------------------
+// Gems list
+//--------------------------------------------------------------
+if listexists 'Gems'
+  removelist 'Gems'
+endif
+createlist 'Gems'
+pushlist 'Gems' 0xf16 // Amethyst
+pushlist 'Gems' 0xf15 // Citrine
+pushlist 'Gems' 0xf19 // Sapphire
+pushlist 'Gems' 0xf25 // Amber
+pushlist 'Gems' 0xf21 // Star Sapphire
+pushlist 'Gems' 0xf10 // Emerald
+pushlist 'Gems' 0xf26 // Diamond
+pushlist 'Gems' 0xf2d // Tourmaline
+pushlist 'Gems' 0xf13 // Ruby
+// move gems
+useobject lootstash
+pause 1000
+headmsg 'moving gems' 23
+for 0 to 'Gems'
+  while @findtype 'Gems[]' 'any' 'backpack' 0
+    @moveitem 'found' 'GemsContainer'
+    headmsg 'Moving Gems' 23 found
+  endwhile
+endfor
+//--------------------------------------------------------------
+// SpellScrolls
+//--------------------------------------------------------------
+if listexists 'SpellScrolls'
+  removelist 'SpellScrolls'
+endif
+createlist 'SpellScrolls'
+// Spell Scrolls
+//below circle 5 scrolls except recall
+//circle1
+pushlist 'SpellScrolls' 0x1f2d // Reactive Armor
+pushlist 'SpellScrolls' 0x1f2e // Clumsy
+pushlist 'SpellScrolls' 0x1f2f // Create Food
+pushlist 'SpellScrolls' 0x1f30 // Feeblemind
+pushlist 'SpellScrolls' 0x1f31 // Heal
+pushlist 'SpellScrolls' 0x1f32 // Magic Arrow
+pushlist 'SpellScrolls' 0x1f33 // Night Sight
+pushlist 'SpellScrolls' 0x1f34 // Weaken
+//circle2
+pushlist 'SpellScrolls' 0x1f35 // Agility
+pushlist 'SpellScrolls' 0x1f36 // Cunning
+pushlist 'SpellScrolls' 0x1f37 // Cure
+pushlist 'SpellScrolls' 0x1f38 // Harm
+pushlist 'SpellScrolls' 0x1f39 // Magic Trap
+pushlist 'SpellScrolls' 0x1f3a // Magic Untrap
+pushlist 'SpellScrolls' 0x1f3b // Protection
+pushlist 'SpellScrolls' 0x1f3c // Strength
+//circle3
+pushlist 'SpellScrolls' 0x1f3d // Bless
+pushlist 'SpellScrolls' 0x1f3e // Fireball
+pushlist 'SpellScrolls' 0x1f3f // Magic Lock
+pushlist 'SpellScrolls' 0x1f40 // Poison
+pushlist 'SpellScrolls' 0x1f41 // Telekinesis
+pushlist 'SpellScrolls' 0x1f42 // Teleport
+pushlist 'SpellScrolls' 0x1f43 // Unlock
+pushlist 'SpellScrolls' 0x1f44 // Wall of Stone
+//circle4
+pushlist 'SpellScrolls' 0x1f45 // Arch Cure
+pushlist 'SpellScrolls' 0x1f46 // Arch Protection
+pushlist 'SpellScrolls' 0x1f47 // Curse
+pushlist 'SpellScrolls' 0x1f48 // Fire Field
+pushlist 'SpellScrolls' 0x1f49 // Greater Heal
+pushlist 'SpellScrolls' 0x1f4a // Lightning
+pushlist 'SpellScrolls' 0x1f4b // Mana Drain
+pushlist 'SpellScrolls' 0x1f4c // Recall
+//circle 5
+pushlist 'SpellScrolls' 0x1f4d // Blade Spirit
+pushlist 'SpellScrolls' 0x1f4e // Dispel Field
+pushlist 'SpellScrolls' 0x1f4f // Incognito
+pushlist 'SpellScrolls' 0x1f50 // Magic Reflection
+pushlist 'SpellScrolls' 0x1f51 // Mind Blast
+pushlist 'SpellScrolls' 0x1f52 // Paralyze
+pushlist 'SpellScrolls' 0x1f53 // Poison Field
+pushlist 'SpellScrolls' 0x1f54 // Summon Creature
+//circle6
+pushlist 'SpellScrolls' 0x1f55 // Dispel
+pushlist 'SpellScrolls' 0x1f56 // Energy Bolt
+pushlist 'SpellScrolls' 0x1f57 // Explosion
+pushlist 'SpellScrolls' 0x1f58 // Invisibility
+pushlist 'SpellScrolls' 0x1f59 // Mark
+pushlist 'SpellScrolls' 0x1f5a // Mass Curse
+pushlist 'SpellScrolls' 0x1f5b // Paralyze Field
+pushlist 'SpellScrolls' 0x1f5c // Reveal
+//circle7
+pushlist 'SpellScrolls' 0x1f5d // Chain Lightning
+pushlist 'SpellScrolls' 0x1f5e // Energy Field
+pushlist 'SpellScrolls' 0x1f5f // Flamestrike
+pushlist 'SpellScrolls' 0x1f60 // Gate Travel
+pushlist 'SpellScrolls' 0x1f61 // Mana Vampire
+pushlist 'SpellScrolls' 0x1f62 // Mass Dispel
+pushlist 'SpellScrolls' 0x1f63 // Meteor Swarm
+pushlist 'SpellScrolls' 0x1f64 // Polymorph
+//circle8
+pushlist 'SpellScrolls' 0x1f65 // Earthquake
+pushlist 'SpellScrolls' 0x1f66 // Energy Vortex
+pushlist 'SpellScrolls' 0x1f67 // Ressurrection
+pushlist 'SpellScrolls' 0x1f68 // Summon Air Elemental
+pushlist 'SpellScrolls' 0x1f69 // Summon Daemon
+pushlist 'SpellScrolls' 0x1f6a // Summon Earth Elemental
+pushlist 'SpellScrolls' 0x1f6b // Summon Fire Elemental
+pushlist 'SpellScrolls' 0x1f6c // Summon Water Elemental
+// Move spell scrolls
+headmsg 'moving scrolls' 23
+for 0 to 'SpellScrolls'
+  while @findtype 'SpellScrolls[]' 'any' 'backpack' 0
+    @moveitem 'found' 'SpellScrollsContainer'
+  endwhile
+endfor
+//--------------------------------------------------------------
+// Supplies
+//--------------------------------------------------------------
+while not @findobject lootbag
+  promptalias lootbag
+endwhile
+// Supplies
+if listexists 'Supplies'
+  removelist 'Supplies'
+endif
+createlist 'Supplies'
+// Regs
+pushlist 'Supplies' 0xf7a  // Black Pearl
+pushlist 'Supplies' 0xf7b  // Blood Moss
+pushlist 'Supplies' 0xf86  // Mandrake Root
+pushlist 'Supplies' 0xf84  // Garlic
+pushlist 'Supplies' 0xf85  // Ginseng
+pushlist 'Supplies' 0xf88  // Nightshade
+pushlist 'Supplies' 0xf8d  // Spider's Silk
+pushlist 'Supplies' 0xf8c  // Sulphurous Ash
+// Other stuff
+pushlist 'Supplies' 0x1bfb  // Bolt
+pushlist 'Supplies' 0xf3f   // Arrow
+pushlist 'Supplies' 0x14fc  // Lockpick
+pushlist 'Supplies' 0xe21   // Bandage
+for 0 to 'Supplies'
+  while @findtype 'Supplies[]' 'any' 'lootbag' 0
+    @moveitem 'found' 'SuppliesContainer'
+  endwhile
+endfor
+//--------------------------------------------------------------
+// Wands
+//--------------------------------------------------------------
+if @findwand identification backpack 5
+  headmsg 'wand found'
+  moveitem found lootstash
+endif
+//equipwand 'identification' 5
+//--------------------------------------------------------------
+// End
+//--------------------------------------------------------------
+headmsg 'done' 23
