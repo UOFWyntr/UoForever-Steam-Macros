@@ -8,6 +8,10 @@ while not @findobject magerunebook
   headmsg 'Select runebook for mage shops' 23
   promptalias magerunebook
 endwhile
+while not @findobject bankdoorsrunebook
+  headmsg 'Select the runebook for recalling to bank doors' 23
+  promptalias bankdoorsrunebook
+endwhile
 //----------------------------------------------------
 //Timer check
 //----------------------------------------------------
@@ -202,6 +206,19 @@ endfor
 //----------------------------------------------------
 if list mageshops == 0
   headmsg 'Done'
+  pause 1000
+  useobject bankdoorsrunebook
+  waitforgump 0x554b87f3 5000
+  replygump 0x554b87f3 47
+  pause 4000
+  turn south
+  turn north
+  walk north
+  walk north
+  walk north
+  walk north
+  walk north
+  pause 1000
   //----------------------------------------------------
   //Create 1 hour timer
   //----------------------------------------------------
