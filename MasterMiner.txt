@@ -1,0 +1,336 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+clearjournal
+while not @findalias packhorse1
+  promptalias packhorse1
+endwhile
+while not @findalias packhorse2
+  promptalias packhorse2
+endwhile
+while not @findalias packhorse3
+  promptalias packhorse3
+endwhile
+while not @findalias packhorse4
+  promptalias packhorse4
+endwhile
+//----------------------------------------------------
+//Smelt
+//----------------------------------------------------
+if @findtype 0xfb1 any ground 1 2
+  while @findtype 0x19b9 any backpack
+    @useobject found
+  endwhile
+  pause 1000
+  for 0 to packhorses
+    pause 1000
+    @useobject packhorses[]
+    pause 1000
+    while @findtype 0x19b9 any packhorses[]
+      @useobject found
+    endwhile
+    pause 1000
+  endfor
+endif
+//----------------------------------------------------
+//Lists
+//----------------------------------------------------
+@clearlist orecount
+if not listexists orecount
+  createlist orecount
+endif
+pushlist orecount 5
+pushlist orecount 10
+pushlist orecount 15
+pushlist orecount 20
+pushlist orecount 25
+pushlist orecount 30
+pushlist orecount 35
+pushlist orecount 40
+pushlist orecount 45
+pushlist orecount 50
+pushlist orecount 55
+pushlist orecount 60
+pushlist orecount 65
+pushlist orecount 70
+pushlist orecount 75
+pushlist orecount 80
+pushlist orecount 85
+pushlist orecount 90
+pushlist orecount 95
+pushlist orecount 100
+pushlist orecount 105
+pushlist orecount 110
+pushlist orecount 115
+pushlist orecount 120
+pushlist orecount 125
+//////////////////////////////////
+@clearlist packhorses
+if not listexists packhorses
+  createlist packhorses
+endif
+pushlist packhorses packhorse1
+pushlist packhorses packhorse2
+pushlist packhorses packhorse3
+pushlist packhorses packhorse4
+pushlist packhorses packhorse5
+///////////////////////////////
+@clearlist packhorsename
+if not listexists packhorsename
+  createlist packhorsename
+endif
+pushlist packhorsename 'Packhorse 1'
+pushlist packhorsename 'Packhorse 2'
+pushlist packhorsename 'Packhorse 3'
+pushlist packhorsename 'Packhorse 4'
+pushlist packhorsename 'Packhorse 5'
+//----------------------------------------------------
+//Pack Horse 1 Mining
+//----------------------------------------------------
+for 0 to packhorses
+  sysmsg 'Beginning to mine for:' 23
+  sysmsg packhorsename[0] 23
+  while @counttype 0x19b9 any packhorses[] < 125
+    if not @findtype 0xe86 any backpack
+      if @findtype 0x1eb8 any backpack
+        @useobject found
+        waitforgump 0x38920abd 5000
+        replygump 0x38920abd 114
+        waitforgump 0x38920abd 5000
+        replygump 0x38920abd 0
+      endif
+      replay
+    endif
+    clearjournal
+    pause 500
+    if mounted self
+      useobject 'self'
+      pause 1000
+    endif
+    while not @injournal 'no metal here' system
+      if not @findtype 0xe86 any backpack
+        if @findtype 0x1eb8 any backpack
+          @useobject found
+          waitforgump 0x38920abd 5000
+          replygump 0x38920abd 114
+          waitforgump 0x38920abd 5000
+          replygump 0x38920abd 0
+          pause 2000
+        endif
+      endif
+      @canceltarget
+      @usetype 0xe86 any backpack
+      waitfortarget 1500
+      //targettileoffset 0 1 0
+      if direction == 0
+        targettileoffset! 0 -1 0
+      elseif direction == 1
+        targettileoffset! 1 -1 0
+      elseif direction == 2
+        targettileoffset! 1 0 0
+      elseif direction == 3
+        targettileoffset! 1 1 0
+      elseif direction == 4
+        targettileoffset! 0 1 0
+      elseif direction == 5
+        targettileoffset! -1 1 0
+      elseif direction == 6
+        targettileoffset! -1 0 0
+      elseif direction == 7
+        targettileoffset! -1 -1 0
+      endif
+      //----------------------------------------------------
+      //Move Iron
+      //----------------------------------------------------
+      if counttype 0x19b9 0 packhorses[] == 125
+        break
+      else
+        if @counttype 0x19b9 0 backpack >= 5
+          while @counttype 0x19b9 0 backpack >= 5
+            movetype 0x19b9 backpack packhorses[] 0 0 0 0 5
+            pause 1000
+            for to 0 orecount
+              if @counttype 0x19b9 0 packhorses[] == orecount[]
+                headmsg packhorsename[0] 23 packhorses[]
+                headmsg orecount[] 23 packhorses[]
+                headmsg 'Iron Ore' 23 packhorses[]
+              endif
+            endfor
+          endwhile
+        endif
+      endif
+      //----------------------------------------------------
+      //Move Dull Copper
+      //----------------------------------------------------
+      if counttype 0x19b9 any packhorses[] == 125
+        break
+      else
+        if @counttype 0x19b9 1045 backpack >= 5
+          while @counttype 0x19b9 1045 backpack >= 5
+            movetype 0x19b9 backpack packhorses[] 0 0 0 1045 5
+            pause 1000
+            for to 0 orecount
+              if @counttype 0x19b9 1045 packhorses[] == orecount[]
+                headmsg packhorsename[0] 23 packhorses[]
+                headmsg orecount[] 23 packhorses[]
+                headmsg 'Dull Copper Ore' 23 packhorses[]
+              endif
+            endfor
+          endwhile
+        endif
+      endif
+      //----------------------------------------------------
+      //Move Shadow
+      //----------------------------------------------------
+      if counttype 0x19b9 any packhorses[] == 125
+        break
+      else
+        if @counttype 0x19b9 1109 backpack >= 5
+          while @counttype 0x19b9 1109 backpack >= 5
+            movetype 0x19b9 backpack packhorses[] 0 0 0 1109 5
+            pause 1000
+            for to 0 orecount
+              if @counttype 0x19b9 1109 packhorses[] == orecount[]
+                headmsg packhorsename[0] 23 packhorses[]
+                headmsg orecount[] 23 packhorses[]
+                headmsg 'Shadow Ore' 23 packhorses[]
+              endif
+            endfor
+          endwhile
+        endif
+      endif
+      //----------------------------------------------------
+      //Move Copper
+      //----------------------------------------------------
+      if counttype 0x19b9 any packhorses[] == 125
+        break
+      else
+        if @counttype 0x19b9 1119 backpack >= 5
+          while @counttype 0x19b9 1119 backpack >= 5
+            movetype 0x19b9 backpack packhorses[] 0 0 0 1119 5
+            pause 1000
+            for to 0 orecount
+              if @counttype 0x19b9 1119 packhorses[] == orecount[]
+                headmsg packhorsename[0] 23 packhorses[]
+                headmsg orecount[] 23 packhorses[]
+                headmsg 'Copper Ore' 23 packhorses[]
+              endif
+            endfor
+          endwhile
+        endif
+      endif
+      //----------------------------------------------------
+      //Move Bronze
+      //----------------------------------------------------
+      if counttype 0x19b9 any packhorses[] == 125
+        break
+      else
+        if @counttype 0x19b9 1752 backpack >= 5
+          while @counttype 0x19b9 1752 backpack >= 5
+            movetype 0x19b9 backpack packhorses[] 0 0 0 1752 5
+            pause 1000
+            for to 0 orecount
+              if @counttype 0x19b9 1752 packhorses[] == orecount[]
+                headmsg packhorsename[0] 23 packhorses[]
+                headmsg orecount[] 23 packhorses[]
+                headmsg 'Bronze Ore' 23 packhorses[]
+              endif
+            endfor
+          endwhile
+        endif
+      endif
+      ///////////////////////////////////////////////////////////////////////
+    endwhile
+    @canceltarget
+    if @counttype 0x19b9 any packhorses[] < 125
+      headmsg 'move to next spot' 23
+    endif
+    pause 3000
+  endwhile
+  for to 0 orecount
+    if @counttype 0x19b9 any packhorses[] == orecount[]
+      headmsg packhorsename[0] 23
+      headmsg 'is full.' 23
+      sysmsg 'Total Ore:' 23
+      sysmsg orecount[] 23
+      sysmsg packhorsename[0] 23
+    endif
+  endfor
+  pause 1000
+  clearjournal
+  poplist packhorsename front
+endfor
+//----------------------------------------------------
+//Backpack Mining
+//----------------------------------------------------
+sysmsg 'Mining to backpack' 23
+while diffweight < 380
+  while not @injournal 'no metal here' system
+    if not @findtype 0xe86 any backpack
+      if @findtype 0x1eb8 any backpack
+        @useobject found
+        waitforgump 0x38920abd 5000
+        replygump 0x38920abd 114
+        waitforgump 0x38920abd 5000
+        replygump 0x38920abd 0
+        pause 2000
+      endif
+    endif
+    @canceltarget
+    @usetype 0xe86 any backpack
+    waitfortarget 1500
+    //targettileoffset 0 1 0
+    if direction == 0
+      targettileoffset! 0 -1 0
+    elseif direction == 1
+      targettileoffset! 1 -1 0
+    elseif direction == 2
+      targettileoffset! 1 0 0
+    elseif direction == 3
+      targettileoffset! 1 1 0
+    elseif direction == 4
+      targettileoffset! 0 1 0
+    elseif direction == 5
+      targettileoffset! -1 1 0
+    elseif direction == 6
+      targettileoffset! -1 0 0
+    elseif direction == 7
+      targettileoffset! -1 -1 0
+    endif
+    if weight > 350
+      headmsg 'backpack full' 23
+      while not @findtype 0xfb1 any ground 1 2
+        pause 1000
+        headmsg 'looking for forge'
+      endwhile
+      replay
+    endif
+  endwhile
+  clearjournal
+  headmsg 'move to next spot' 23
+  pause 3000
+endwhile
+sysmsg 'backpack full' 23
+//////////////////////////////////////////////////////////////////////
+//look for forge and smelt
+while not @findtype 0xfb1 any ground 1 2
+  pause 1000
+  headmsg 'looking for forge'
+endwhile
+//smelt
+if @findtype 0xfb1 any ground 1 2
+  while @findtype 0x19b9 any backpack
+    @useobject found
+  endwhile
+  pause 1000
+  for 0 to packhorses
+    @useobject packhorses[]
+    pause 1000
+    while @findtype 0x19b9 any packhorses[]
+      @useobject found
+    endwhile
+    pause 1000
+  endfor
+endif
+pause 2000
+replay
