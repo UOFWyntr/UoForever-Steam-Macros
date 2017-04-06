@@ -1,5 +1,0 @@
-//portal fragment
-if @findtype 0xf21 1161 backpack
-headmsg 'portal fragment found' 23
-headmsg 'here!' 23 found
-endif
