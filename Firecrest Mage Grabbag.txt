@@ -1,0 +1,220 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+//-------------------Supplies-----------------------//
+while not @findobject suppliescontainer
+  headmsg 'Select supplies container..' 32
+  headmsg 'Regs, Bottles, Empty Backpacks' 45
+  promptalias suppliescontainer
+endwhile
+@useobject suppliescontainer
+pause 1200
+//-------------------Empty Backpacks-----------------------//
+while not @findobject emptybackpacks
+  headmsg 'Select bag holding empty backpacks..' 32
+  promptalias emptybackpacks
+endwhile
+@useobject emptybackpacks
+pause 1200
+//-------------------Trapped Pouch Chest-----------------------//
+while not @findobject pouchchest
+  headmsg 'Select trapped pouch chest..' 32
+  promptalias pouchchest
+endwhile
+@useobject pouchchest
+pause 1200
+//-------------------Armor Chest-----------------------//
+while not @findobject armorchest
+  headmsg 'Select armor bag chest..' 32
+  promptalias armorchest
+endwhile
+@useobject armorchest
+pause 1200
+//-------------------Finished Grab Bag Chest-----------------------//
+headmsg 'Select chest for completed grab bags..' 32
+promptalias completed
+useobject completed
+pause 1200
+//----------------------------------------------------
+//Begin
+//----------------------------------------------------
+for 4
+  //-------------------Supply Check-----------------------//
+  if @counttype 0xe75 any emptybackpacks < 1
+    headmsg 'Check Empty Backpack Supply!' 44
+    stop
+  endif
+  //Blackpearl
+  if @counttype 0xf7a any suppliescontainer < 80
+    headmsg 'Check Blackpearl Supply!' 44
+    stop
+  endif
+  //Bloodmoss
+  if @counttype 0xf7b any suppliescontainer < 80
+    headmsg 'Check Bloodmoss Supply!' 44
+    stop
+  endif
+  //Sulferous Ash
+  if @counttype 0xf8c any suppliescontainer < 80
+    headmsg 'Check Sulferous Ash Supply!' 44
+    stop
+  endif
+  //Spiders Silk
+  if @counttype 0xf8d any suppliescontainer < 80
+    headmsg 'Check Spiders Silk Supply!' 44
+    stop
+  endif
+  //Ginseng
+  if @counttype 0xf85 any suppliescontainer < 80
+    headmsg 'Check Ginseng Supply!' 44
+    stop
+  endif
+  //Garlic
+  if @counttype 0xf84 any suppliescontainer < 80
+    headmsg 'Check Garlic Supply!' 44
+    stop
+  endif
+  //Mandrake Root
+  if @counttype 0xf86 any suppliescontainer < 80
+    headmsg 'Check Mandrake Supply!' 44
+    stop
+  endif
+  //Nightshade
+  if @counttype 0xf88 any suppliescontainer < 80
+    headmsg 'Check Nightshade Supply!' 44
+    stop
+  endif
+  if @counttype 0xf0e any suppliescontainer < 40
+    headmsg 'Check Bottle Supply!' 44
+    stop
+  endif
+  if @counttype 0xe79 any pouchchest < 10
+    headmsg 'Check Pouch Supply!' 44
+    stop
+  endif
+  if @counttype 0xe76 any armorchest < 1
+    headmsg 'Check Armor Bag Supply!' 44
+    stop
+  endif
+  //-------------------Set Grabbag Alias-----------------------//
+  if @findtype 0xe75 any emptybackpacks
+    @setalias grabbag found
+    pause 500
+    moveitem grabbag completed
+    pause 1200
+    useobject grabbag
+    pause 1200
+  else
+    headmsg 'Supply Out of Backpacks!' 45
+    stop
+  endif
+  //-------------------Move Reagents-----------------------//
+  //Blackpearl
+  if not @counttype 0xf7a any grabbag == 80
+    if movetype 0xf7a suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Blackpearl!' 45
+      stop
+    endif
+  endif
+  //Bloodmoss
+  if not @counttype 0xf7b any grabbag == 80
+    if movetype 0xf7b suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Bloodmoss!' 45
+      stop
+    endif
+  endif
+  //Sulferous Ash
+  if not @counttype 0xf8c any grabbag == 80
+    if movetype 0xf8c suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Sulferous Ash!' 45
+      stop
+    endif
+  endif
+  //Spiders Silk
+  if not @counttype 0xf8d any grabbag == 80
+    if movetype 0xf8d suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Spiders Silk!' 45
+      stop
+    endif
+  endif
+  //Ginseng
+  if not @counttype 0xf85 any grabbag == 80
+    if movetype 0xf85 suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Ginseng!' 45
+      stop
+    endif
+  endif
+  //Garlic
+  if not @counttype 0xf84 any grabbag == 80
+    if movetype 0xf84 suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Garlic!' 45
+      stop
+    endif
+  endif
+  //Mandrake Root
+  if not @counttype 0xf86 any grabbag == 80
+    if movetype 0xf86 suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Mandrake!' 45
+      stop
+    endif
+  endif
+  //Nightshade
+  if not @counttype 0xf88 any grabbag == 80
+    if movetype 0xf88 suppliescontainer grabbag 0 0 0 any 80
+      pause 1000
+    else
+      headmsg 'Supply Out of Nightshade!' 45
+      stop
+    endif
+  endif
+  //-------------------Move Bottles-----------------------//
+  if not @counttype 0xf0e any grabbag == 40
+    if movetype 0xf0e suppliescontainer grabbag 0 0 0 any 40
+      pause 1000
+    else
+      headmsg 'Supply Out of Bottles!' 45
+      stop
+    endif
+  endif
+  //-------------------Move Pouches-----------------------//
+  if not @counttype 0xe79 any grabbag == 10
+    while @counttype 0xe79 any grabbag < 10
+      if movetype 0xe79 pouchchest grabbag 0 0 0 any 1
+        pause 1000
+      else
+        headmsg 'Supply Out of Pouches!' 45
+        stop
+      endif
+    endwhile
+  endif
+  //-------------------Move Armor Bag-----------------------//
+  if not @counttype 0xe76 any grabbag == 1
+    if movetype 0xe76 armorchest grabbag 0 0 0 any 1
+      pause 1000
+    else
+      headmsg 'Supply Out of Armor!' 45
+      stop
+    endif
+  endif
+  //----------------------------------------------------
+  //Cleanup
+  //----------------------------------------------------
+  headmsg 'Done moving supplies to grabbag..' 14
+  //ignoreobject grabbag
+  @unsetalias grabbag
+endfor
+headmsg '4 Done!' 14

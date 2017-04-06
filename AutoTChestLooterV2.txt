@@ -1,0 +1,374 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+while not @findobject supplies
+  promptalias supplies
+endwhile
+while not @findobject armor
+  promptalias armor
+endwhile
+while not @findobject weapons
+  promptalias weapons
+endwhile
+while not @findobject scrolls
+  promptalias scrolls
+endwhile
+//----------------------------------------------------
+//Lists
+//----------------------------------------------------
+//-------------------Supplies-----------------------//
+if listexists reagents
+  removelist reagents
+endif
+createlist reagents
+// Regs
+pushlist reagents 0xf7a  // Black Pearl
+pushlist reagents 0xf7b  // Blood Moss
+pushlist reagents 0xf86  // Mandrake Root
+pushlist reagents 0xf84  // Garlic
+pushlist reagents 0xf85  // Ginseng
+pushlist reagents 0xf88  // Nightshade
+pushlist reagents 0xf8d  // Spider's Silk
+pushlist reagents 0xf8c  // Sulphurous Ash
+//-------------------Gems-----------------------//
+if listexists gems
+  removelist gems
+endif
+createlist gems
+pushlist gems 0xf16 // Amethyst
+pushlist gems 0xf15 // Citrine
+pushlist gems 0xf19 // Sapphire
+pushlist gems 0xf25 // Amber
+pushlist gems 0xf21 // Star Sapphire
+pushlist gems 0xf10 // Emerald
+pushlist gems 0xf26 // Diamond
+pushlist gems 0xf2d // Tourmaline
+pushlist gems 0xf13 // Ruby
+//-------------------Trash-----------------------//
+if listexists trash
+  removelist trash
+endif
+createlist trash
+// Cloth hats
+pushlist trash 0x1544
+pushlist trash 0x1540
+pushlist trash 0x1713
+pushlist trash 0x1715
+pushlist trash 0x1714
+pushlist trash 0x1716
+pushlist trash 0x1717
+pushlist trash 0x1718
+pushlist trash 0x1719
+pushlist trash 0x171a
+pushlist trash 0x171b
+pushlist trash 0x171c
+pushlist trash 0x2306
+//-------------------Scrolls-----------------------//
+if listexists scrolls
+  removelist scrolls
+endif
+createlist scrolls
+// Spell Scrolls
+//circle1
+pushlist scrolls 0x1f2d // Reactive Armor
+pushlist scrolls 0x1f2e // Clumsy
+pushlist scrolls 0x1f2f // Create Food
+pushlist scrolls 0x1f30 // Feeblemind
+pushlist scrolls 0x1f31 // Heal
+pushlist scrolls 0x1f32 // Magic Arrow
+pushlist scrolls 0x1f33 // Night Sight
+pushlist scrolls 0x1f34 // Weaken
+//circle2
+pushlist scrolls 0x1f35 // Agility
+pushlist scrolls 0x1f36 // Cunning
+pushlist scrolls 0x1f37 // Cure
+pushlist scrolls 0x1f38 // Harm
+pushlist scrolls 0x1f39 // Magic Trap
+pushlist scrolls 0x1f3a // Magic Untrap
+pushlist scrolls 0x1f3b // Protection
+pushlist scrolls 0x1f3c // Strength
+//circle3
+pushlist scrolls 0x1f3d // Bless
+pushlist scrolls 0x1f3e // Fireball
+pushlist scrolls 0x1f3f // Magic Lock
+pushlist scrolls 0x1f40 // Poison
+pushlist scrolls 0x1f41 // Telekinesis
+pushlist scrolls 0x1f42 // Teleport
+pushlist scrolls 0x1f43 // Unlock
+pushlist scrolls 0x1f44 // Wall of Stone
+//circle4
+pushlist scrolls 0x1f45 // Arch Cure
+pushlist scrolls 0x1f46 // Arch Protection
+pushlist scrolls 0x1f47 // Curse
+pushlist scrolls 0x1f48 // Fire Field
+pushlist scrolls 0x1f49 // Greater Heal
+pushlist scrolls 0x1f4a // Lightning
+pushlist scrolls 0x1f4b // Mana Drain
+pushlist scrolls 0x1f4c // Recall
+//circle 5
+pushlist scrolls 0x1f4d // Blade Spirit
+pushlist scrolls 0x1f4e // Dispel Field
+pushlist scrolls 0x1f4f // Incognito
+pushlist scrolls 0x1f50 // Magic Reflection
+pushlist scrolls 0x1f51 // Mind Blast
+pushlist scrolls 0x1f52 // Paralyze
+pushlist scrolls 0x1f53 // Poison Field
+pushlist scrolls 0x1f54 // Summon Creature
+//circle6
+pushlist scrolls 0x1f55 // Dispel
+pushlist scrolls 0x1f56 // Energy Bolt
+pushlist scrolls 0x1f57 // Explosion
+pushlist scrolls 0x1f58 // Invisibility
+pushlist scrolls 0x1f59 // Mark
+pushlist scrolls 0x1f5a // Mass Curse
+pushlist scrolls 0x1f5b // Paralyze Field
+pushlist scrolls 0x1f5c // Reveal
+//circle7
+pushlist scrolls 0x1f5d // Chain Lightning
+pushlist scrolls 0x1f5e // Energy Field
+pushlist scrolls 0x1f5f // Flamestrike
+pushlist scrolls 0x1f60 // Gate Travel
+pushlist scrolls 0x1f61 // Mana Vampire
+pushlist scrolls 0x1f62 // Mass Dispel
+pushlist scrolls 0x1f63 // Meteor Swarm
+pushlist scrolls 0x1f64 // Polymorph
+//circle8
+pushlist scrolls 0x1f65 // Earthquake
+pushlist scrolls 0x1f66 // Energy Vortex
+pushlist scrolls 0x1f67 // Ressurrection
+pushlist scrolls 0x1f68 // Summon Air Elemental
+pushlist scrolls 0x1f69 // Summon Daemon
+pushlist scrolls 0x1f6a // Summon Earth Elemental
+pushlist scrolls 0x1f6b // Summon Fire Elemental
+pushlist scrolls 0x1f6c // Summon Water Elemental
+//-------------------Weapons-----------------------//
+if listexists weapons
+  removelist weapons
+endif
+createlist weapons
+// Axes
+pushlist weapons 0xf43
+pushlist weapons 0xf45
+pushlist weapons 0x13fb
+pushlist weapons 0x1443
+pushlist weapons 0xf49
+pushlist weapons 0xf47
+pushlist weapons 0xf4d
+pushlist weapons 0x143e
+pushlist weapons 0xf4b
+// Swords
+pushlist weapons 0xf5e
+pushlist weapons 0x13ff
+pushlist weapons 0x13b6
+pushlist weapons 0x13b9
+pushlist weapons 0xf5e
+pushlist weapons 0x1441
+pushlist weapons 0xf61
+pushlist weapons 0xf61
+pushlist weapons 0xec3
+pushlist weapons 0xe86
+// Fencing
+pushlist weapons 0x1403
+pushlist weapons 0xf62
+pushlist weapons 0x1401
+pushlist weapons 0x1405
+pushlist weapons 0xf52
+// Bows
+pushlist weapons 0xf50
+pushlist weapons 0x26c3
+pushlist weapons 0x13fd
+pushlist weapons 0x26c2
+pushlist weapons 0x13b2
+// Maces
+pushlist weapons 0x143d
+pushlist weapons 0xe89
+pushlist weapons 0x1407
+pushlist weapons 0x13b4
+pushlist weapons 0x1439
+pushlist weapons 0x143b
+pushlist weapons 0x13b0
+pushlist weapons 0xf5c
+pushlist weapons 0xdf0
+pushlist weapons 0x13f8
+// Shields
+pushlist weapons 0x1b76
+pushlist weapons 0x1b7b
+pushlist weapons 0x1b72
+pushlist weapons 0x1b73
+pushlist weapons 0x1b74
+pushlist weapons 0x1b79
+pushlist weapons 0x1b7a
+//instruments
+pushlist weapons 0xeb1
+pushlist weapons 0xeb2
+pushlist weapons 0xeb3
+pushlist weapons 0xe9c
+pushlist weapons 0xe9e
+pushlist weapons 0xe9d
+pushlist weapons 0x2260
+//-------------------Armor-----------------------//
+if listexists armor
+  removelist armor
+endif
+createlist armor
+// Metal Hats
+pushlist armor 0x1f0b
+pushlist armor 0x140a
+pushlist armor 0x2b6e
+pushlist armor 0x1412
+pushlist armor 0x140c
+pushlist armor 0x13bb
+pushlist armor 0x2b71
+pushlist armor 0x1451
+pushlist armor 0x1408
+pushlist armor 0x2b72
+pushlist armor 0x140e
+pushlist armor 0x2b70
+pushlist armor 0x1db9
+pushlist armor 0x2b6f
+pushlist armor 0x2b73
+// Bear masks deer masks
+pushlist armor 0x1545
+pushlist armor 0x1547
+// Neck
+pushlist armor 0x13c7
+pushlist armor 0x2b69
+pushlist armor 0x1413
+pushlist armor 0x2fc7
+pushlist armor 0x2b76
+pushlist armor 0x13d6
+// Gloves
+pushlist armor 0x1414
+pushlist armor 0x2b75
+pushlist armor 0x13eb
+pushlist armor 0x1450
+pushlist armor 0x13d5
+pushlist armor 0x2b6a
+pushlist armor 0x2fc6
+pushlist armor 0x13c6
+// Arms
+pushlist armor 0x144e
+pushlist armor 0x13ee
+pushlist armor 0x13dc
+pushlist armor 0x2b6c
+pushlist armor 0x13cd
+pushlist armor 0x2fc8
+pushlist armor 0x2b77
+pushlist armor 0x1410
+// Chest
+pushlist armor 0x13cc
+pushlist armor 0x1415
+pushlist armor 0x13bf
+pushlist armor 0x13db
+pushlist armor 0x13ec
+pushlist armor 0x2b74
+pushlist armor 0x2b67
+pushlist armor 0x2fc5
+pushlist armor 0x144f
+// Legs
+pushlist armor 0x2fc9
+pushlist armor 0x13f0
+pushlist armor 0x2fca
+pushlist armor 0x2b78
+pushlist armor 0x1411
+pushlist armor 0x13be
+pushlist armor 0x2b6b
+pushlist armor 0x1452
+pushlist armor 0x13cb
+pushlist armor 0x13da
+// Skirt shorts
+pushlist armor 0x1c08
+pushlist armor 0x1c00
+// Female armor
+pushlist armor 0x1c04
+pushlist armor 0x1c0a
+pushlist armor 0x1c0c
+pushlist armor 0x1c02
+pushlist armor 0x1c06
+//----------------------------------------------------
+//Treasure Chest
+//----------------------------------------------------
+while not @findobject treasurechest
+  promptalias treasurechest
+endwhile
+useobject treasurechest
+//----------------------------------------------------
+//Loot
+//----------------------------------------------------
+if weight < maxweight
+  //move reagents
+  for 0 to reagents
+    while @findtype reagents[] any treasurechest
+      @moveitem found supplies
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+  //move gems
+  for 0 to gems
+    while @findtype gems[] any treasurechest
+      @moveitem found supplies
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+  //move trash
+  for 0 to trash
+    while @findtype trash[] any treasurechest
+      @moveitem found supplies
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+  //move spell scrolls
+  for 0 to scrolls
+    while @findtype scrolls[] any treasurechest
+      @moveitem found scrolls
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+  //move weapons
+  for 0 to weapons
+    while @findtype weapons[] any treasurechest
+      @moveitem found weapons
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+  //move armor
+  for 0 to armor
+    while @findtype armor[] any treasurechest
+      @moveitem found armor
+      pause 1000
+      if not @inrange treasurechest 2
+        pause 3000
+        useskill hiding
+        stop
+      endif
+    endwhile
+  endfor
+else
+  msg 'Overloaded' 23
+  stop
+endif

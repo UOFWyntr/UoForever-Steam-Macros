@@ -1,0 +1,517 @@
+//----------------------------------------------------------------//
+//Auto Peace Tame V8 by Wyntr ©2017
+//----------------------------------------------------------------//
+//Notes V8:
+//Script will release any tamed animal that is in its tameables list, this includes bonded pets.
+//Notes V7:
+//Revamped entriely.
+//Plug and play.
+//Hostile monster lists are not complete.
+//Features:
+//Script will peace hostiles that are in the peaceables list or if target is attacking.
+//Fast peaceing before mobs attack.
+//Will not tame your own retames unless their name is not BBQ.
+//Auto walks after tame during taming.
+//Targets closest first.
+//Will repeace on failure after 5 seconds.
+//Tame rename list for easy changing.
+//Range has been increased to 16 tiles for peacemaking.
+//----------------------------------------------------------------//
+//Updates:
+//V1
+//Added tame war check.
+//Tweaked taming routine to accomodate renames correctly.
+//Revamped targeting routine.
+//Added tamename list.
+//Added if statement to break taming loop if tame goes into warmode.
+//V2
+//Removed peacetimer.
+//Removed if statement breaking taming loop.
+//V3. V4. V5 scrapped
+//V6
+//Foundation for V7
+//Reworked entire script into a two list system.
+//V7
+//Minor changes to targeting in peaceing loop.
+//V8
+//Changed how the script handles targets after locking on.
+//Adjusted how script handles already tamed creatures.
+//Script is set to replay after peace failures and after a succesful tame.
+//Added Dagger Isle hostiles to peaceables list.
+//Added correct ID for large hellcats.
+//Induces taming boners.
+//----------------------------------------------------------------//
+//Special Instructions:
+//--------Tame Names------//
+//To change the name of your tames rename, change inside the quotes where it say 'BBQ' down below inside of lists.
+//if not listexists tamename
+//  createlist tamename
+//  pushlist tamename 'BBQ' <--edit name here
+//endif
+//--------------------------------Setup--------------------------------//
+@clearjournal
+@cancelautotarget
+@canceltarget
+//@unsetalias enemy
+@unsetalias maintarget
+@unsetalias peacetarget
+@unsetalias tametarget
+@removelist peaceables
+@removelist tameables
+//--------------------------------Lists--------------------------------//
+//TameName
+if not listexists tamename
+  createlist tamename
+  pushlist tamename 'BBQ'
+endif
+//Tameables List
+if not listexists peaceables
+  createlist peaceables
+  pushlist peaceables 0x7f //Hellcat (Large)
+  pushlist peaceables 0x62 //Hellhound
+  pushlist peaceables 0xbc //Savage Ridgeback
+  pushlist peaceables 0x17 //Dire Wolf
+  pushlist peaceables 0xce //Lava Lizard
+  pushlist peaceables 0x14 //Frost spider
+  pushlist peaceables 0xc9 //Hellcat (Small)
+  pushlist peaceables 0xda //Frenzied Ostard
+  pushlist peaceables 0x50 //Giant Toad
+  pushlist peaceables 0x1c //Giant Spider
+  pushlist peaceables 0x30 //Scorpion
+  pushlist peaceables 0xca //Alligator
+  pushlist peaceables 0x51 //Bullfrog
+  pushlist peaceables 0xd4 //Grizzly Bear
+  //
+  pushlist peaceables 0x24 //lizardman
+  pushlist peaceables 0x1 //an ogre
+  pushlist peaceables 0x12 //an ettin
+  pushlist peaceables 0x15 //LJ Serpent
+  pushlist peaceables 0x2a //a ratman
+  //Undead
+  pushlist peaceables 0x3 //a zombie
+  pushlist peaceables 0x38 //a skeleton with axe
+  pushlist peaceables 0x99 //a ghoul
+  pushlist peaceables 0x32 //a skeleton
+  pushlist peaceables 0x1a //a shade
+  pushlist peaceables 0x94 //a bone mage
+  pushlist peaceables 0x4f //a lich lord
+  pushlist peaceables 0x18 //a lich
+  pushlist peaceables 0x93 //a skeletal knight
+  pushlist peaceables 0x39 //a bone knight
+  pushlist peaceables 0x4 //a gargoyle
+  //orcs
+  pushlist peaceables 0x8a //orclord
+  pushlist peaceables 0x8c //orc mage
+  pushlist peaceables 0x11 //orc
+  pushlist peaceables 0xb6 //orc b6 bomber
+  //
+  pushlist peaceables 0x1e //harpy
+  pushlist peaceables 0x34 //snake
+  pushlist peaceables 0x83 //efreet
+  pushlist peaceables 0x4a // imp
+  pushlist peaceables 0xf //fire ele
+  pushlist peaceables 0x2f //reaper
+  pushlist peaceables 0x37 //frost troll
+endif
+if not listexists tameables
+  createlist tameables
+  //40plus-----------------------------------//
+  if @skill 'animal taming' > 40
+    pushlist tameables 0x3f //Cougar
+    pushlist tameables 0xd6 //Panther
+    pushlist tameables 0xd3 //Black Bear
+    pushlist tameables 0xa7 //Brown Bear
+    pushlist tameables 0xdc //Llama
+    pushlist tameables 0x124 //Pack Llama
+    pushlist tameables 0x123 //Pack Horse
+    pushlist tameables 0xc8 //Horse
+    pushlist tameables 0xe2 //Horse2
+    pushlist tameables 0xcc //Horse3
+    pushlist tameables 0xe4 //Horse4
+    pushlist tameables 0x122 //Boar
+    pushlist tameables 0xe1 //Timber Wolf
+    pushlist tameables 0xed //Hind
+    pushlist tameables 0xdb //Forest Ostard
+    pushlist tameables 0xd2 //Desert Ostard
+  endif
+  //50plus-----------------------------------//
+  if @skill 'animal taming' > 50
+    pushlist tameables 0x22 //White Wolf
+    pushlist tameables 0x25 //White Wolf2
+    pushlist tameables 0x1c //Giant Spider
+    pushlist tameables 0x41 //Snow leopard
+    pushlist tameables 0x40 //Snow leopard
+    pushlist tameables 0x19 //Gray wolf
+    pushlist tameables 0x1b //Gray wolf2
+    pushlist tameables 0x1d //gorilla
+    //50plus hostile
+  endif
+  //60plus-----------------------------------//
+  if @skill 'animal taming' > 60
+    pushlist tameables 0xdd //Walrus
+    pushlist tameables 0xd5 //Polar Bear
+    //60plus hostile
+    pushlist tameables 0x30 //Scorpion
+    pushlist tameables 0xca //Alligator
+    pushlist tameables 0x51 //Bullfrog
+  endif
+  //70plus-----------------------------------//
+  if @skill 'animal taming' > 70
+    pushlist tameables 0xea //Great Hart
+    //70plus hostile
+    pushlist tameables 0xd4 //Grizzly Bear
+    pushlist tameables 0x50 //Giant Toad
+    pushlist tameables 0x34 //snake
+  endif
+  //80plus-----------------------------------//
+  if @skill 'animal taming' > 80
+    pushlist tameables 0xbb //Ridgeback
+    pushlist tameables 0xbc //Savage Ridgeback
+    pushlist tameables 0xe8 //Bull
+    pushlist tameables 0xe9 //Bull2
+    //80plus hostile
+    pushlist tameables 0xc9 //Hellcat (Small)
+    pushlist tameables 0xda //Frenzied Ostard
+    pushlist tameables 0x14 //Frost spider
+  endif
+  //90plus-----------------------------------//
+  if @skill 'animal taming' > 90
+    //90plus hostile
+    pushlist tameables 0x7f //Hellcat (Large)
+    pushlist tameables 0x4a // imp
+    pushlist tameables 0x62 //Hellhound
+    pushlist tameables 0x17 //Dire Wolf
+    pushlist tameables 0xce //Lava Lizard
+  endif
+endif
+//-------------------------------Instrument--------------------------------//
+//Find Instrument
+if not @findobject 'instrument'
+  if @findtype '0xe9e' 'backpack' 'any' //Tambourine with red tassle
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+  elseif @findtype '0x2805' 'any' 'backpack' //Flute
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  elseif @findtype '0xe9d' '0' 'backpack'//Tambourine
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  elseif @findtype '0xe9c' '0' 'backpack' //Drum
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  elseif @findtype '0xeb3' '0' 'backpack' //Lute
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  elseif @findtype '0xeb2' '0' 'backpack' //Lap Harp
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  elseif @findtype '0xeb1' '0' 'backpack' //Standing Harp
+    @setalias 'instrument' 'found'
+    headmsg "Instrument set." '66'
+    @useobject 'instrument'
+  else
+    headmsg 'No instrument found'
+    stop
+  endif
+endif
+//--------------------------------Tame Search--------------------------------//
+//find tames from list
+if not @findobject maintarget
+  //find enemy
+  //getenemy ('innocent'/'criminal'/'enemy'/'murderer'/'friend'/'gray'/'any') ['humanoid'/'transformation'/'nearest'/'closest']
+  getenemy criminal gray any nearest
+  @setalias maintarget enemy
+  if @distance maintarget > 15
+    stop
+  endif
+  //set alias's
+  for 0 to peaceables
+    if @graphic maintarget == peaceables[]
+      @setalias peacetarget maintarget
+      if war peacetarget
+        headmsg '**HOSTILE Target Found**' 32 peacetarget
+      else
+        headmsg '**PEACE Target Found**' 81 peacetarget
+      endif
+      break
+    endif
+  endfor
+  for 0 to tameables
+    if @graphic maintarget == tameables[]
+      @setalias tametarget maintarget
+      headmsg '**Tame Target Found**' 81 tametarget
+      break
+    endif
+  endfor
+endif
+//no tames msg
+if not @findobject maintarget
+  headmsg '**No Mobs**' 32
+  stop
+endif
+if not @findobject peacetarget and not @findobject tametarget
+  //
+  if war maintarget
+    if @inrange maintarget 16
+      while not @injournal 'play hypnotic music' system
+        headmsg '**NOT IN LIST Peacing..**' 56 maintarget
+        useskill peacemaking
+        pause 500
+        //instrument check
+        if @injournal 'instrument shall you' system
+          pause 500
+          target! instrument
+          clearjournal
+          pause 500
+        endif
+        //skill resuse timer
+        if @injournal 'must wait a few moments to use' system
+          headmsg '**Peace Not Ready**' 32
+          @canceltarget
+          clearjournal
+          pause 4000
+          replay
+        endif
+        //target tame for peace
+        waitfortarget 2000
+        target! maintarget
+        pause 500
+        //target unseen check
+        if @injournal 'cannot be seen' system
+          headmsg '**Target Cannot Be Seen**' 32
+          @canceltarget
+          clearjournal
+          stop
+        endif
+        //failure check
+        if @injournal 'play poorly, and there is no' system
+          headmsg '**PEACE FAILURE**' 32 maintarget
+          sysmsg 'Retrying Peace in 5 seconds..' 32
+          pause 5000
+          clearjournal
+          replay
+        endif
+        //final check for peace success
+        if @injournal 'play hypnotic music' system or @injournal 'creature is already being' system
+          if @injournal 'creature is already being' system
+            headmsg '**Already Peaced**' 32 maintarget
+            warmode on
+            warmode off
+            clearjournal
+            if @name tametarget == tamename[0]
+              stop
+            endif
+            if not @war maintarget and not @findobject tametarget
+              stop
+            endif
+            stop
+            //break
+          else
+            headmsg '!!Peace Succesful!!' 56 maintarget
+            clearjournal
+            warmode on
+            warmode off
+            if not @war maintarget and not @findobject tametarget
+              stop
+            endif
+            if @name tametarget == tamename[0]
+              stop
+            endif
+            stop
+            break
+          endif
+        endif
+      endwhile
+    endif //end of inrange
+  endif
+  //
+  headmsg '**Not in List**' 32
+  stop
+endif
+//----------------------------Peace Routine-----------------------------//
+//Peace if needed.
+for 0 to peaceables
+  if @graphic maintarget == peaceables[0]
+    break
+  endif
+  poplist peaceables front
+endfor
+for 0 to tameables
+  if @graphic maintarget == tameables[0]
+    break
+  endif
+  poplist tameables front
+endfor
+if war maintarget or @graphic maintarget == peaceables[0]
+  if @inrange maintarget 16
+    while not @injournal 'play hypnotic music' system
+      headmsg '**Peacing..**' 56 maintarget
+      useskill peacemaking
+      pause 500
+      //instrument check
+      if @injournal 'instrument shall you' system
+        pause 500
+        target! instrument
+        clearjournal
+        pause 500
+      endif
+      //skill resuse timer
+      if @injournal 'must wait a few moments to use' system
+        headmsg '**Peace Not Ready**' 32
+        @canceltarget
+        clearjournal
+        pause 4000
+        @getenemy criminal gray any nearest
+        replay
+      endif
+      //target tame for peace
+      waitfortarget 2000
+      target! maintarget
+      pause 500
+      //target unseen check
+      if @injournal 'cannot be seen' system
+        headmsg '**Target Cannot Be Seen**' 32
+        @canceltarget
+        clearjournal
+        stop
+      endif
+      //failure check
+      if @injournal 'play poorly, and there is no' system
+        headmsg '**PEACE FAILURE**' 32 maintarget
+        sysmsg 'Retrying Peace in 5 seconds..' 32
+        pause 5000
+        clearjournal
+        @getenemy criminal gray any nearest
+        replay
+      endif
+      //final check for peace success
+      if @injournal 'play hypnotic music' system or @injournal 'creature is already being' system
+        if @injournal 'creature is already being' system
+          headmsg '**Already Peaced**' 32 maintarget
+          warmode on
+          warmode off
+          clearjournal
+          if @name tametarget == tamename[0]
+            stop
+          endif
+          if not @war maintarget and not @findobject tametarget
+            stop
+          endif
+          break
+        else
+          headmsg '!!Peace Succesful!!' 56 maintarget
+          clearjournal
+          warmode on
+          warmode off
+          if not @war maintarget and not @findobject tametarget
+            stop
+          endif
+          if @name tametarget == tamename[0]
+            stop
+          endif
+          headmsg '!!Taming in 5 Seconds!!' 56 maintarget
+          pause 5000
+          break
+        endif
+      endif
+    endwhile
+  endif //end of inrange
+endif
+if @name tametarget == tamename[0]
+  headmsg '**Tamed It**' 10 maintarget
+  stop
+endif
+//----------------------------Taming Routine---------------------------//
+if @graphic maintarget == tameables[0]
+  if name tametarget != tamename[0]
+    headmsg '**Tame Me**' 81 tametarget
+    while not war tametarget
+      if @inrange tametarget 3
+        useskill 'animal taming'
+        waitfortarget 1500
+        target! tametarget
+        //range check and movement
+        if not @inrange 'tametarget' 1
+          if @x 'tametarget' > x 'self' and @y 'tametarget' > y 'self'
+            turn 'Southeast'
+            walk 'Southeast'
+          elseif @x 'tametarget' < x 'self' and @y 'tametarget' > y 'self'
+            turn 'Southwest'
+            walk 'Southwest'
+          elseif @x 'tametarget' > x 'self' and @y 'tametarget' < y 'self'
+            turn 'Northeast'
+            walk 'Northeast'
+          elseif @x 'tametarget' < x 'self' and @y 'tametarget' < y 'self'
+            turn 'Northwest'
+            walk 'Northwest'
+          elseif @x 'tametarget' > x 'self' and @y 'tametarget' == y 'self'
+            turn 'East'
+            walk 'East'
+          elseif @x 'tametarget' < x 'self' and @y 'tametarget' == y 'self'
+            turn 'West'
+            walk 'West'
+          elseif @x 'tametarget' == x 'self' and @y 'tametarget' > y 'self'
+            turn 'South'
+            walk 'South'
+          elseif @x 'tametarget' == x 'self' and @y 'tametarget' < y 'self'
+            turn 'North'
+            walk 'North'
+          endif
+        endif
+        //------------------------Rename--------------------------------//
+        //rename
+        if name tametarget != tamename[0]
+          rename tametarget tamename[0]
+          pause 300
+          if @injournal 'must wait a while longer to rename' system
+            pause 1500
+            clearjournal
+          endif
+        endif
+        //release
+        if name tametarget == tamename[0]
+          waitforcontext tametarget 8 1000
+          waitforgump 0x909cc741 1000
+          //release gump
+          if @replygump 0x909cc741 2
+            headmsg '**Released**' 56 tametarget
+            pause 200
+            ignoreobject tametarget
+            @unsetalias tametarget
+            shownames mobiles
+            // here is where you can loop the script of stop it
+            replay
+            //stop
+          endif
+        endif
+        if @injournal 'Target cannot be seen.' system
+          clearjournal
+          stop
+        endif
+        if @distance tametarget > 5
+          headmsg '**Tame Broke**' 39
+          stop
+        endif
+      else
+        headmsg '**Get Closer**' 56 tametarget
+        while not @inrange tametarget 3
+          pause 1500
+          sysmsg 'Get Schwifty' 18
+          if @distance tametarget > 12
+            headmsg '**Tame Broke**' 39
+            stop
+          endif
+        endwhile
+      endif
+    endwhile
+    if @war tametarget
+      @getenemy criminal gray any nearest
+      replay
+    endif
+  endif
+endif

@@ -1,0 +1,44 @@
+headmsg 'Select new armor bag..' 26
+promptalias armorbag
+//legs
+if @findtype 0x13cb any armorbag
+  equipitem found 24
+  pause 1000
+else
+  sysmsg 'No leather leggings found..' 23
+endif
+//chest
+if @findtype 0x13cc any armorbag
+  equipitem found 13
+  pause 1000
+else
+  sysmsg 'No leather tunic found..' 23
+endif
+//arms
+if @findtype 0x13cd any armorbag
+  equipitem found 19
+  pause 1000
+else
+  sysmsg 'No leather sleeves found..' 23
+endif
+//gloves
+if @findtype 0x13c6 any armorbag
+  equipitem found 7
+  pause 1000
+else
+  sysmsg 'No leather gloves found..' 23
+endif
+//neck
+if @findtype 0x13c7 any armorbag
+  equipitem found 10
+  pause 1000
+else
+  sysmsg 'No leather gorget found..' 23
+endif
+//head
+if @findtype 0x1db9 any armorbag
+  equipitem found 6
+  pause 1000
+else
+  sysmsg 'No leather cap found..' 23
+endif

@@ -1,0 +1,84 @@
+//walks south and chops to the right or east
+canceltarget
+clearjournal
+if not listexists monster
+  @createlist monsters
+endif
+if list monsters == 0
+  pushlist monsters 0x1 //ogre
+  pushlist monsters 0x12 //Ettin
+  pushlist monsters 0x15 //LJ Serpent
+endif
+// !! Find and equip any axe in backpack ***
+if not listexists 'AxeList'
+  createlist 'AxeList'
+endif
+// !! axe data
+@clearlist 'AxeList'
+@pushlist 'AxeList' 0xf43 //Hatchet
+@pushlist 'AxeList' 0xf45 //Executioner's Axe
+@pushlist 'AxeList' 0xf4b  //Double Axe
+@pushlist 'AxeList' 0x13fb //Large Battle Axe
+@pushlist 'AxeList' 0x1443 //Two Handed Axe
+@pushlist 'AxeList' 0xf47  //Battle Axe
+@pushlist 'AxeList' 0xf49  //Axe
+//
+// !! Equip Axe
+for 0 to 'AxeList'
+  if @findtype 'AxeList[]' 'any' 'backpack'
+    unsetalias 'AXE'
+    setalias 'AXE' 'found'
+  endif
+endfor
+if not @findlayer 'self' 2
+  equipitem 'AXE' 2
+  pause 600
+endif
+//******************************************
+// !! Main chopping routine
+//
+useobject 'LeftHand'
+waitfortarget 2000
+targettileoffset! 1 0 0
+pause 500
+//////////////
+if @injournal "You can't" system
+  sysmsg 'No Tree!' 289
+  walk south
+  pause 100
+  clearjournal
+  replay
+endif
+if @injournal 'not enough wood' system
+  sysmsg 'no more wood' 23
+  walk south
+  pause 100
+  clearjournal
+  replay
+endif
+//----------------------------------------------------
+//Monster check
+//----------------------------------------------------
+if not @findobject targ any ground 1 10
+  for 0 to monsters
+    if @findtype monsters[] any ground 1 10
+      headmsg 'Monster found'
+      @setalias targ found
+      break
+    endif
+  endfor
+endif
+//----------------------------------------------------
+//Monster attack and skin/loot
+//----------------------------------------------------
+if @findobject targ any world 1 2
+  headmsg 'Attacking'
+  attack targ
+  while @findobject targ any world 1 2
+  endwhile
+endif
+//******************************************
+if diffweight < 10
+  headmsg 'full'
+  stop
+endif

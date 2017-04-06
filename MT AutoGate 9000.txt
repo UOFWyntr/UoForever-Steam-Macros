@@ -1,0 +1,98 @@
+//Mage Tower AutoGater9000
+//By Wyntr
+//1. Place reagents for gating directly in bank
+//2. Open bank before starting
+//3. Runebook with the first and second rune being mall location
+//4. You must clear the journal before starting unless a save is about to happen. To do this type -clearjournal ingame and hit enter.
+//If "The world will save in 1 minute" is detected in the journal the script will pause for 2 mins before starting back up.
+//----------------------------------------
+//Setup
+//----------------------------------------
+while not @findobject vendorbook
+  headmsg 'Select vendor runebook please..' 99
+  promptalias vendorbook
+endwhile
+//----------------------------------------
+//Save Detection
+//----------------------------------------
+if @injournal 'The world will save in 1' system
+  headmsg 'World will save in 1 minute.' 31
+  sysmsg 'Save Deteced' 31
+  sysmsg 'Waiting...' 31
+  pause 120000
+  clearjournal
+else
+  sysmsg 'No save deteced..' 69
+  clearjournal
+endif
+//----------------------------------------
+//Reagent Checks and Restock
+//----------------------------------------
+//Mandrake
+if not @findtype 0xf86 any backpack
+  if @findtype 0xf86 any bank
+    headmsg 'Moving Mandrake..' 69 found
+    movetype 0xf86 bank backpack 0 0 0 any 1
+    pause 2000
+  else
+    headmsg 'Out of Mandrake!' 55
+    sysmsg 'Gate is down! No Mandrake!' 55
+    pause 2000
+    stop
+  endif
+endif
+//Black Pearl
+if not @findtype 0xf7a any backpack
+  if @findtype 0xf7a any bank
+    headmsg 'Moving Black Pearl..' 69 found
+    movetype 0xf7a bank backpack 0 0 0 any 1
+    pause 2000
+  else
+    headmsg 'Out of  Black Pearl!' 55
+    sysmsg 'Gate is down! No Blackpearl!' 55
+    pause 1000
+    stop
+  endif
+endif
+//Sulfurous Ash
+if not @findtype 0xf8c any backpack
+  if @findtype 0xf8c any bank
+    headmsg 'Moving Sulfurous Ash..' 69 found
+    movetype 0xf8c bank backpack 0 0 0 any 1
+    pause 1000
+  else
+    headmsg 'Out of Sulfurous Ash!' 55
+    sysmsg 'Gate is down! No Sulfurous Ash!' 55
+    pause 1000
+    stop
+  endif
+endif
+//----------------------------------------
+//Advertisement/Announcement
+//----------------------------------------
+msg 'Now gating to the new Mage Tower Mall next to Moonglow Bank!'
+pause 2000
+//----------------------------------------
+//Gate
+//----------------------------------------
+useobject vendorbook
+waitforgump 0x554b87f3 5000
+replygump 0x554b87f3 6
+pause 3000
+//----------------------------------------
+//Blocked Gate Detection
+//----------------------------------------
+if @injournal "That location is blocked" system
+  sysmsg 'Rune location is blocked!' 31
+  //Backup Gate
+  pause 2000
+  useobject vendorbook
+  waitforgump 0x554b87f3 5000
+  replygump 0x554b87f3 12
+  clearjournal
+endif
+//----------------------------------------
+//Pause Inbetween Gates
+//----------------------------------------
+pause 240000
+replay

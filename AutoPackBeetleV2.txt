@@ -1,0 +1,46 @@
+while not @findalias beetle
+  if mounted self
+    @useobject self
+    pause 800
+  endif
+  headmsg 'Select your beetle..' 46
+  promptalias beetle
+endwhile
+//checks for skins to cut
+while @findtype 0x1079 any backpack
+  headmsg 'Found Hides' 46
+  if @usetype 0xf9f any backpack
+    waitfortarget 5000
+    target! found
+    pause 1200
+  else
+    headmsg 'No Scissors' 56
+    stop
+  endif
+  pause 500
+endwhile
+if @findtype 0x1081 any backpack or @findtype 0x26b4 any backpack
+  if mounted self
+    @useobject self
+    pause 800
+  endif
+  
+  while @findtype 0x1081 any backpack
+    headmsg 'Moving Leather' 46 beetle
+    moveitem found beetle
+    pause 1200
+  endwhile
+  while @findtype 0x26b4 any backpack
+    headmsg 'Moving Scales' 46 beetle
+    moveitem found beetle
+    pause 1200
+  endwhile
+  if not mounted self
+    @useobject beetle
+    pause 500
+  endif
+endif
+if not mounted self
+  @useobject beetle
+  pause 500
+endif

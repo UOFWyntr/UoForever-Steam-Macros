@@ -1,0 +1,133 @@
+//----------------------------------------------------
+//Config
+//----------------------------------------------------
+//-------------------Supplies-----------------------//
+while not @findobject suppliescontainer
+  headmsg 'Select supplies container..' 32
+  headmsg 'Arrows, Bottles, Bandaids, Empty Backpacks' 45
+  promptalias suppliescontainer
+endwhile
+@useobject suppliescontainer
+pause 1200
+//-------------------Empty Backpacks-----------------------//
+while not @findobject emptybackpacks
+  headmsg 'Select bag holding empty backpacks..' 32
+  promptalias emptybackpacks
+endwhile
+@useobject emptybackpacks
+pause 1200
+//-------------------Trapped Pouch Chest-----------------------//
+while not @findobject pouchchest
+  headmsg 'Select trapped pouch chest..' 32
+  promptalias pouchchest
+endwhile
+@useobject pouchchest
+pause 1200
+//-------------------Armor Chest-----------------------//
+while not @findobject armorchest
+  headmsg 'Select armor bag chest..' 32
+  promptalias armorchest
+endwhile
+@useobject armorchest
+pause 1200
+//-------------------Finished Grab Bag Chest-----------------------//
+headmsg 'Select chest for completed grab bags..' 32
+promptalias completed
+useobject completed
+pause 1200
+//----------------------------------------------------
+//Begin
+//----------------------------------------------------
+for 5
+  //-------------------Supply Check-----------------------//
+  if @counttype 0xe75 any emptybackpacks < 1
+    headmsg 'Check Empty Backpack Supply!' 44
+    stop
+  endif
+  if @counttype 0xf0e any suppliescontainer < 40
+    headmsg 'Check Bottle Supply!' 44
+    stop
+  endif
+  if @counttype 0xe21 any suppliescontainer < 100
+    headmsg 'Check Bandaid Supply!' 44
+    stop
+  endif
+  if @counttype 0xf3f any suppliescontainer < 200
+    headmsg 'Check Arrow Supply!' 44
+    stop
+  endif
+  if @counttype 0xe79 any pouchchest < 10
+    headmsg 'Check Pouch Supply!' 44
+    stop
+  endif
+  if @counttype 0xe76 any armorchest < 1
+    headmsg 'Check Armor Bag Supply!' 44
+    stop
+  endif
+  //-------------------Set Grabbag Alias-----------------------//
+  if @findtype 0xe75 any emptybackpacks
+    @setalias grabbag found
+    pause 500
+    moveitem grabbag completed
+    pause 1200
+    useobject grabbag
+    pause 1200
+  else
+    headmsg 'Supply Out of Backpacks!' 45
+    stop
+  endif
+  //-------------------Move Bottles-----------------------//
+  if not @counttype 0xf0e any grabbag == 40
+    if movetype 0xf0e suppliescontainer grabbag 0 0 0 any 40
+      pause 1000
+    else
+      headmsg 'Supply Out of Bottles!' 45
+      stop
+    endif
+  endif
+  //-------------------Move Bandaids-----------------------//
+  if not @counttype 0xe21 any grabbag == 100
+    if movetype 0xe21 suppliescontainer grabbag 0 0 0 any 100
+      pause 1000
+    else
+      headmsg 'Supply Out of Bandaids!' 45
+      stop
+    endif
+  endif
+  //-------------------Move Arrows-----------------------//
+  if not @counttype 0xf3f any grabbag == 200
+    if movetype 0xf3f suppliescontainer grabbag 0 0 0 any 200
+      pause 1000
+    else
+      headmsg 'Supply Out of Arrows!' 45
+      stop
+    endif
+  endif
+  //-------------------Move Pouches-----------------------//
+  if not @counttype 0xe79 any grabbag == 10
+    while @counttype 0xe79 any grabbag < 10
+      if movetype 0xe79 pouchchest grabbag 0 0 0 any 1
+        pause 1000
+      else
+        headmsg 'Supply Out of Pouches!' 45
+        stop
+      endif
+    endwhile
+  endif
+  //-------------------Move Armor Bag-----------------------//
+  if not @counttype 0xe76 any grabbag == 1
+    if movetype 0xe76 armorchest grabbag 0 0 0 any 1
+      pause 1000
+    else
+      headmsg 'Supply Out of Armor!' 45
+      stop
+    endif
+  endif
+  //----------------------------------------------------
+  //Cleanup
+  //----------------------------------------------------
+  headmsg 'Done moving supplies to grabbag..' 14
+  //ignoreobject grabbag
+  @unsetalias grabbag
+endfor
+headmsg '5 Done!' 14

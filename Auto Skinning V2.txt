@@ -1,0 +1,90 @@
+if diffweight < 20
+  headmsg 'Almost overweight!' 54
+  //checks for skins to cut
+  while @findtype 0x1079 any backpack
+    if @usetype 0xf9f any backpack
+      waitfortarget 5000
+      target! found
+    else
+      headmsg 'No Scissors' 55
+    endif
+  endwhile
+  if weight > maxweight
+    headmsg '**Overweight**' 54
+    stop
+  endif
+endif
+if not @listexists knifes
+  createlist knifes
+  pushlist knifes 0xf52 //dagger
+  pushlist knifes 0xec4 //skinning knife
+endif
+if not @findobject knife
+  for 0 to knifes
+    if @findtype knifes[] any backpack
+      @setalias knife found
+      headmsg '**Knife Set**' 82 knife
+      break
+    endif
+  endfor
+  if not @findobject knife
+    headmsg 'No Knifes Found!' 54
+    stop
+  endif
+endif
+//open corpse
+if @findtype 0x2006 any ground 1 2
+  @setalias corpseone found
+  pause 200
+  if @useobject knife
+    waitfortarget 5000
+    target! corpseone
+    pause 100
+    @useobject corpseone
+    pause 1000
+  else
+    headmsg 'No Knifes Found!' 54
+    stop
+  endif
+else
+  headmsg '**No Corpse**' 32
+  while @findtype 0x1079 any backpack
+    headmsg 'Found Hides' 46
+    if @usetype 0xf9f any backpack
+      waitfortarget 5000
+      target! found
+      pause 1200
+    else
+      headmsg 'No Scissors' 56
+      stop
+    endif
+    pause 500
+  endwhile
+  stop
+endif
+//safe to loot check
+if @injournal 'this monster corpse will be a' system
+  headmsg 'Warning!' 29
+  headmsg '**NO LOOT**' 29
+  clearjournal
+  ignoreobject corpseone
+  stop
+else
+  headmsg 'Safe To Loot' 46
+  pause 2500
+  ignoreobject corpseone
+endif
+//
+//checks for skins to cut
+while @findtype 0x1079 any backpack
+  headmsg 'Found Hides' 46
+  if @usetype 0xf9f any backpack
+    waitfortarget 5000
+    target! found
+    pause 1200
+  else
+    headmsg 'No Scissors' 56
+    stop
+  endif
+  pause 500
+endwhile

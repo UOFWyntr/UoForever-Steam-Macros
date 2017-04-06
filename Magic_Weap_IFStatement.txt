@@ -1,0 +1,138 @@
+ if @injournal 'Silver' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Silver' '2213'
+      @clearjournal
+    elseif @injournal 'Vanquishing' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Vanquishing' '2213'
+      @clearjournal
+    elseif @injournal 'Power' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Power' '2213'
+      @clearjournal
+    elseif @injournal 'Supremely Accurate' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Supreme' '2213'
+      @clearjournal
+    elseif @injournal 'Exceedingly Accurate' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Exceedingly' '2213'
+      @clearjournal
+    elseif @injournal 'Exorcism' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Exorcisim' '2213'
+      @clearjournal
+    elseif @injournal 'Daemon' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Daemon' '2213'
+      @clearjournal
+    elseif @injournal 'Gargoyle' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Gargoyle' '2213'
+      @clearjournal
+    elseif @injournal 'Fey' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Fey' '2213'
+      @clearjournal
+    elseif @injournal 'Repond' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Repond' '2213'
+      @clearjournal
+    elseif @injournal 'Vacuum' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Vacuum' '2213'
+      @clearjournal
+    elseif @injournal 'Flame' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Flame' '2213'
+      @clearjournal
+    elseif @injournal 'Elemental' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Elemental' '2213'
+      @clearjournal
+    elseif @injournal 'Earth' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Earth' '2213'
+      @clearjournal
+    elseif @injournal 'Water' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Water' '2213'
+      @clearjournal
+    elseif @injournal 'Ogre' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Ogre' '2213'
+      @clearjournal
+    elseif @injournal 'Orc Slaying' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Orc' '2213'
+      @clearjournal
+    elseif @injournal 'Arachnid' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Arachnid' '2213'
+      @clearjournal
+    elseif @injournal 'Spider' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Spider' '2213'
+      @clearjournal
+    elseif @injournal 'Scorpion' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Scorpion' '2213'
+      @clearjournal
+    elseif @injournal 'Terathan' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Terathan' '2213'
+      @clearjournal
+    elseif @injournal 'Reptilian' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Reptilian' '2213'
+      @clearjournal
+    elseif @injournal 'Dragon' 'system'
+      headmsg 'Dragon' '2213'
+      moveitem found 'keepchest'
+      @clearjournal
+    elseif @injournal 'Lizardman' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Lizardman' '2213'
+      @clearjournal
+    elseif @injournal 'Ophidian' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Ophidan' '2213'
+      @clearjournal
+    elseif @injournal 'Snake's Bane' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Snake' '2213'
+      @clearjournal
+    elseif @injournal 'Blood' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Blood' '2213'
+      @clearjournal
+    elseif @injournal 'Elemental Health' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Poison' '2213'
+      @clearjournal
+    elseif @injournal 'Troll' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Troll' '2213'
+      @clearjournal
+    elseif @injournal 'Summer Wind' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Snow' '2213'
+      @clearjournal
+    elseif @injournal 'Balron' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Balron' '2213'
+      @clearjournal
+      //
+    elseif @injournal 'Indestructable/Invulnerability' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Indestructable/Invulnerability' '2213'
+      @clearjournal
+    elseif @injournal 'Invulnerability' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Invulnerability' '2213'
+      @clearjournal
+    elseif @injournal 'Fortification' 'system'
+      moveitem found 'keepchest'
+      headmsg 'Fortification' '2213'
+      @clearjournal
+    endif

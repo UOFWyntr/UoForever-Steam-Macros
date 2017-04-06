@@ -1,0 +1,64 @@
+headmsg 'Open chest and all its contents first!' 23
+sysmsg 'Open chest and all its contents first!' 23
+pause 1000
+//lists
+clearjournal
+clearignorelist
+removelist cntnumber
+if not listexists cntnumber
+  createlist cntnumber
+endif
+pushlist cntnumber 1
+pushlist cntnumber 2
+pushlist cntnumber 3
+pushlist cntnumber 4
+pushlist cntnumber 5
+pushlist cntnumber 6
+pushlist cntnumber 7
+pushlist cntnumber 8
+pushlist cntnumber 9
+pushlist cntnumber 10
+pushlist cntnumber 11
+pushlist cntnumber 12
+pushlist cntnumber 13
+pushlist cntnumber 14
+pushlist cntnumber 15
+pushlist cntnumber 16
+pushlist cntnumber 17
+pushlist cntnumber 18
+pushlist cntnumber 19
+pushlist cntnumber 20
+pushlist cntnumber 21
+pushlist cntnumber 22
+pushlist cntnumber 23
+pushlist cntnumber 24
+pushlist cntnumber 25
+pushlist cntnumber 26
+pushlist cntnumber 27
+pushlist cntnumber 28
+pushlist cntnumber 29
+pushlist cntnumber 30
+///chest to be counted
+promptalias countchest
+pause 1000
+////
+//the id of item to count is below, current id is spellbooks
+while @findtype 0xefa any countchest
+  clickobject found
+  //tweak below for speed and lag
+  pause 200
+  //change the slayer below @injournal
+  if @injournal 'fey' system
+    headmsg cntnumber[0] 23
+    sysmsg cntnumber[0] 23
+    poplist cntnumber front
+    ignoreobject found
+    if list cntnumber == 0
+      headmsg 'maxxed at 30'
+      stop
+    endif
+  endif
+  ignoreobject found
+  clearjournal
+endwhile
+headmsg 'done'

@@ -1,0 +1,109 @@
+//Fletching Slayer Crafter with Beetle V2
+//Beta
+if not @findalias 'craftingbeetle'
+  //Unmount
+  if mounted 'self'
+    useobject 'self'
+    pause 1000
+  endif
+  headmsg 'Select beetle..' 72
+  promptalias 'craftingbeetle'
+endif
+if not @findalias 'slayerbag'
+  if mounted 'self'
+    useobject 'self'
+    pause 1000
+  endif
+  waitforcontext craftingbeetle 9 3000
+  headmsg 'Select slayer bag on beetle..' 65
+  promptalias 'slayerbag'
+endif
+if not @findalias 'Magicbag'
+  headmsg 'Select magic bow bag in backpack..' 46
+  promptalias 'Magicbag'
+endif
+if not @findobject 'Sell Bag'
+  headmsg 'Select sell/trash bag..' 43
+  promptalias 'Sell Bag'
+endif
+//Mount if unmounted
+if not mounted 'self'
+  useobject 'craftingbeetle'
+  pause 1000
+endif
+if not hidden 'self' and skill 'hiding' >= '50'
+  useskill 'hiding'
+endif
+if @counttype 0x1bdd any backpack > 20
+  if @usetype '0x1022' 'any' 'backpack'
+    waitforgump 0x38920abd 2000
+    replygump 0x38920abd 15
+    waitforgump 0x38920abd 2000
+    replygump 0x38920abd 2
+    pause 2000
+    if @injournal 'crafted a slayer' 'system'
+      headmsg 'Slayer crafted!' 33
+      //Unmount
+      if mounted 'self'
+        useobject 'self'
+        pause 1000
+      endif
+      while @findtype '0x13b2' 'any' 'backpack'
+        moveitem 'found' 'slayerbag'
+        pause 1000
+      endwhile
+      ignoreobject 'found'
+      clearjournal
+      //mount
+      useobject 'craftingbeetle'
+      pause 1000
+    else
+      if @injournal 'magical properties' 'system'
+        headmsg 'Magic Bow crafted!' 33
+        while @findtype '0x13b2' 'any' 'backpack'
+          moveitem 'found' 'Magicbag'
+          pause 1000
+        endwhile
+        ignoreobject 'found'
+        clearjournal
+      else
+        while @findtype '0x13b2' 'any' 'backpack'
+          moveitem 'found' 'Sell Bag'
+          pause 1000
+        endwhile
+        @ignoreobject 'found'
+      endif
+    endif
+  else
+    if not @findtype '0x1022' 'any' 'backpack'
+      headmsg 'Out of fletching tools.' 32
+      stop
+    endif
+  endif
+else
+  //restock
+  if mounted 'self'
+    useobject 'self'
+    pause 1000
+  endif
+  //edit here for bonded beetle
+  waitforcontext craftingbeetle 9 3000
+  //edit last number on the next line for the amount of wood for the script to grab
+  if movetype 0x1bdd craftingbeetle backpack 0 0 0 any 2000
+    pause 1000
+  else
+    headmsg 'Out of wood!' 21
+    stop
+  endif
+  //Mount if unmounted
+  if not mounted 'self'
+    useobject 'craftingbeetle'
+    pause 1000
+  endif
+endif
+while weight >= maxweight
+  headmsg 'Time to Sell'
+  sysmsg 'Time to Sell'
+  stop
+endwhile
+replay

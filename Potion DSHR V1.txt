@@ -1,0 +1,78 @@
+if not @timerexists healpotion
+  createtimer healpotion
+  settimer healpotion 11000
+endif
+//enter your max strength and dex while buffed
+if not @listexists strength
+  createlist strength
+  pushlist strength 120 //str here
+endif
+if not @listexists dexterity
+  createlist dexterity
+  pushlist dexterity 45 //dex here
+endif
+//str
+if @findtype 0xf09 any backpack and str < strength[0]
+  if @findlayer self 2
+    togglehands left
+  endif
+  sysmsg 'Str' 42
+  @usetype 0xf09 any backpack
+  pause 700
+elseif not @findtype 0xf09 any backpack
+  sysmsg '**Out of Str**' 29
+endif
+//dex
+if @findtype 0xf08 any backpack and dex < dexterity[0]
+  if @findlayer self 2
+    togglehands left
+  endif
+  sysmsg 'Dex' 42
+  @usetype 0xf08 any backpack
+  pause 700
+elseif not @findtype 0xf08 any backpack
+  sysmsg '**Out of Agi**' 29
+endif
+//timer if you are only out of 1 type of potion ie str or dex.
+//if out of both script will not pause here.
+if @findtype 0xf09 any backpack or @findtype 0xf08 any backpack
+  if str < strength[0] or dex < dexterity[0]
+    //sysmsg 'Pause'
+    pause 400
+  endif
+endif
+//heal
+if @findtype 0xf0c any backpack and hits < maxhits
+  if timer healpotion > 10000
+    if @findlayer self 2
+      togglehands left
+    endif
+    sysmsg 'Heal' 42
+    @usetype 0xf0c any backpack
+    pause 700
+    settimer healpotion 0
+  else
+    headmsg '**Heal On Cooldown**' 87
+    timermsg healpotion 87
+  endif
+elseif not @findtype 0xf0c any backpack
+  headmsg '**Out of Heals**' 29
+endif
+//refresh
+if @findtype 0xf0b any backpack and stam < maxstam
+  if @findlayer self 2
+    togglehands left
+  endif
+  sysmsg 'Stam' 42
+  @usetype 0xf0b any backpack
+  pause 700
+elseif not @findtype 0xf0b any backpack
+  headmsg '**Out of Refreshs**' 29
+endif
+//equip
+pause 100
+if not @findlayer self 2
+  pause 500
+  sysmsg 'Equip' 43
+  togglehands left
+endif

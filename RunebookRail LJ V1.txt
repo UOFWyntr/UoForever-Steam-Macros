@@ -1,0 +1,266 @@
+//---------------------------------------------------------
+//Config
+//---------------------------------------------------------
+clearjournal
+//find wood runebook
+if not @findobject 'lumberrunebook'
+  sysmsg 'Select Rune Book for lumberjacking..' 73
+  promptalias 'lumberrunebook'
+endif
+//homerunebook make sure and set the rune for home in this book to default
+while not @findobject homerunebook
+  headmsg 'Select home runebook'
+  promptalias homerunebook
+endwhile
+//---------------------------------------------------------
+//Lists
+//---------------------------------------------------------
+// !! Find and equip any axe in backpack ***
+if not listexists 'AxeList'
+  createlist 'AxeList'
+endif
+// !! axe data
+@clearlist 'AxeList'
+@pushlist 'AxeList' 0xf43 //Hatchet
+@pushlist 'AxeList' 0xf45 //Executioner's Axe
+@pushlist 'AxeList' 0xf4b  //Double Axe
+@pushlist 'AxeList' 0x13fb //Large Battle Axe
+@pushlist 'AxeList' 0x1443 //Two Handed Axe
+@pushlist 'AxeList' 0xf47  //Battle Axe
+@pushlist 'AxeList' 0xf49  //Axe
+//
+for 0 to 'AxeList'
+  if @findtype 'AxeList[]' 'any' 'backpack'
+    unsetalias 'AXE'
+    setalias 'AXE' 'found'
+  endif
+endfor
+//monsters
+if not listexists monster
+  @createlist monsters
+endif
+if list monsters == 0
+  pushlist monsters 0x1 //ogre
+  pushlist monsters 0x12 //Ettin
+  pushlist monsters 0x15 //LJ Serpent
+endif
+//context menus for book
+if not listexists 'recalllumber'
+  @createlist 'recalllumber'
+endif
+poplist 'recalllumber' 'front'
+if 'list' 'recalllumber' == '0'
+  pushlist 'recalllumber' 2
+  pushlist 'recalllumber' 8
+  pushlist 'recalllumber' 14
+  pushlist 'recalllumber' 20
+  pushlist 'recalllumber' 26
+  pushlist 'recalllumber' 32
+  pushlist 'recalllumber' 38
+  pushlist 'recalllumber' 44
+  pushlist 'recalllumber' 50
+  pushlist 'recalllumber' 56
+  pushlist 'recalllumber' 62
+  pushlist 'recalllumber' 68
+  pushlist 'recalllumber' 74
+  pushlist 'recalllumber' 80
+  pushlist 'recalllumber' 86
+  pushlist 'recalllumber' 92
+  //
+endif
+//callout for positions
+if not listexists 'recallnumber'
+  @createlist 'recallnumber'
+endif
+poplist 'recallnumber' 'front'
+if 'list' 'recallnumber' == '0'
+  @pushlist 'recallnumber' 'Position 1'
+  @pushlist 'recallnumber' 'Position 2'
+  @pushlist 'recallnumber' 'Position 3'
+  @pushlist 'recallnumber' 'Position 4'
+  //
+  @pushlist 'recallnumber' 'Position 5'
+  @pushlist 'recallnumber' 'Position 6'
+  @pushlist 'recallnumber' 'Position 7'
+  @pushlist 'recallnumber' 'Position 8'
+  //
+  @pushlist 'recallnumber' 'Position 9'
+  @pushlist 'recallnumber' 'Position 10'
+  @pushlist 'recallnumber' 'Position 11'
+  @pushlist 'recallnumber' 'Position 12'
+  //
+  @pushlist 'recallnumber' 'Position 13'
+  @pushlist 'recallnumber' 'Position 14'
+  @pushlist 'recallnumber' 'Position 15'
+  @pushlist 'recallnumber' 'Position 16'
+  //
+endif
+//---------------------------------------------------------
+//Recall To Chop
+//---------------------------------------------------------
+//mana check
+while not mana > 11
+  headmsg 'Waiting for mana'
+  useskill meditation
+  pause 5000
+endwhile
+//recall
+headmsg 'Recall to...'
+headmsg recalllumber[0]
+headmsg recallnumber[0]
+pause 1000
+useobject 'lumberrunebook'
+waitforgump 0x554b87f3 5000
+replygump '0x554b87f3' recalllumber[0]
+pause 3000
+//set timer
+if not timerexists timetochop
+  createtimer timetochop
+endif
+settimer timetochop 0
+//---------------------------------------------------------
+//Rail Chopping
+//---------------------------------------------------------
+// !! Equip Axe
+if not @findlayer 'self' 2
+  equipitem 'AXE' 2
+  pause 600
+endif
+//*******************************************************
+// !! Main chopping routine
+//*******************************************************
+// This is where you change the wait time of not recieving any wood to your backpack
+//If the timer reaches 10 seconds it will recall you to next rune
+while timer timetochop < 10000
+  canceltarget
+  useobject 'LeftHand'
+  waitfortarget 2000
+  targettileoffset! 1 0 0
+  pause 500
+  //////////////
+  if @injournal "You can't" system
+    sysmsg 'No Tree!' 289
+    walk south
+    pause 100
+    clearjournal
+  endif
+  if @injournal 'not enough wood' system
+    sysmsg 'no more wood' 23
+    walk south
+    pause 100
+    clearjournal
+  endif
+  //wood check
+  if @injournal 'some ordinary' 'system'
+    headmsg '--Ordinary wood--' '1150'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some oak' 'system'
+    headmsg '--OAK--' '2010'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some ash' 'system'
+    headmsg '--ASH--' '1191'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some yew' 'system'
+    headmsg '--YEW--' '1192'
+    msg '[e ah'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some heartwood' 'system'
+    headmsg '>!!!--HEARTWOOD--!!!<' '1193'
+    msg '[e yea'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some bloodwood' 'system'
+    headmsg '>!!!--BLOODWOOD--!!!<' '1194'
+    msg '[e woohoo'
+    clearjournal
+    settimer timetochop 0
+  endif
+  if @injournal 'some frostwood' 'system'
+    headmsg '>!!!--FROSTWOOD--!!!<' '1151'
+    msg '[e woohoo'
+    clearjournal
+    settimer timetochop 0
+  endif
+  //Weight Check
+  if diffweight < 30
+    while not mana > 11
+      headmsg 'Waiting for mana'
+      useskill meditation
+      pause 5000
+    endwhile
+    useobject homerunebook
+    waitforgump 0x554b87f3 5000
+    replygump 0x554b87f3 2
+    pause 3000
+    stop
+  endif
+  //----------------------------------------------------
+  //Monster check
+  //----------------------------------------------------
+  if not @findobject targ any ground 1 10
+    for 0 to monsters
+      if @findtype monsters[] any ground 1 10
+        headmsg 'Monster found'
+        @setalias targ found
+        break
+      endif
+    endfor
+  endif
+  //----------------------------------------------------
+  //Monster attack and skin/loot
+  //----------------------------------------------------
+  if @findobject targ any world 1 2
+    headmsg 'Attacking'
+    attack targ
+    while @findobject targ any world 1 2
+      if hits < maxhits
+        bandageself
+        while not @injournal 'You finish applying the' system
+        endwhile
+        clearjournal
+      endif
+      if poisoned self
+        bandageself
+        while not @injournal 'You finish applying the' system
+        endwhile
+        clearjournal
+        if hits < maxhits
+          bandageself
+          while not @injournal 'You finish applying the' system
+          endwhile
+          clearjournal
+        endif
+      endif
+    endwhile
+  endif
+  //delay
+  pause 500
+endwhile
+//*******************************************************
+// !! Main chopping routine END
+//*******************************************************
+//---------------------------------------------------------
+//Weight Check
+//---------------------------------------------------------
+if diffweight < 30
+  while not mana > 11
+    headmsg 'Waiting for mana'
+    useskill meditation
+    pause 5000
+  endwhile
+  useobject homerunebook
+  waitforgump 0x554b87f3 5000
+  replygump 0x554b87f3 2
+  pause 3000
+  stop
+endif
+replay

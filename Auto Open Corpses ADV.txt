@@ -1,0 +1,20 @@
+if @findtype '0x2006' 'any' 'ground' '1' '2'
+  @setalias! 'corpse1' 'found'
+  pause 200
+  useobject 'corpse1'
+else
+  headmsg "No Corpse" 23
+  stop
+endif
+pause 100
+if @injournal 'this monster corpse will be a' system
+  headmsg 'Warning!' 29
+  headmsg 'NO LOOT' 29
+  clearjournal
+  ignoreobject 'corpse1'
+  stop
+else
+  headmsg 'Looting' 58
+  grabitem
+  ignoreobject 'corpse1'
+endif

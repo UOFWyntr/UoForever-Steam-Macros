@@ -1,0 +1,102 @@
+clearjournal
+clearignorelist
+@removelist mods
+if not listexists mods
+  createlist mods
+  pushlist mods 'Exceedingly'
+endif
+////////////////////////////
+@unsetalias 'frombag'
+//@unsetalias foundbag
+while not @findobject 'frombag'
+  headmsg 'Select From Bag'
+  promptalias 'frombag'
+  pause 1000
+endwhile
+///////////////////////////////////
+while not @findobject 'foundbag'
+  headmsg 'Select Bag For Found Item'
+  promptalias 'foundbag'
+  pause 1000
+endwhile
+//////////////////////////////////////////////////////////////////////////
+useobject foundbag
+pause 1000
+///////////////////////////////////////////////////////////////////////////////
+if listexists weapontypes
+  removelist weapontypes
+endif
+createlist weapontypes
+clearlist weapontypes
+//Fencing
+@pushlist weapontypes 0xf62  //Spear
+@pushlist weapontypes 0x1403 //Short Spear
+@pushlist weapontypes 0xe87  //Pitchfork
+@pushlist weapontypes 0x1405 //Warfork
+@pushlist weapontypes 0x1401 //Kryss
+@pushlist weapontypes 0xf52  //Dagger
+//Macing
+@pushlist weapontypes 0x13b0 //War axe
+@pushlist weapontypes 0xdf0  //Black Staff
+@pushlist weapontypes 0x1439 //War Hammer
+@pushlist weapontypes 0x1407 //War Mace
+@pushlist weapontypes 0xe89  //Quarter Staff
+@pushlist weapontypes 0x143d //Hammer Pick
+@pushlist weapontypes 0x13b4 //Club
+@pushlist weapontypes 0xe81  //Shepherds Crook
+@pushlist weapontypes 0x13f8 //Gnarled Staff
+@pushlist weapontypes 0xf5c  //Mace
+@pushlist weapontypes 0x143b //Maul
+//Swords
+@pushlist weapontypes 0x13b9 //Viking Sword
+@pushlist weapontypes 0xf61  //Longsword
+@pushlist weapontypes 0x1441 //Cutlass
+@pushlist weapontypes 0x13b6 //Scimitar
+@pushlist weapontypes 0xec4  //Skinning Knife
+@pushlist weapontypes 0x13f6 //Butcher Knife
+@pushlist weapontypes 0xf5e  //Broadsword
+@pushlist weapontypes 0x13ff //Katana
+@pushlist weapontypes 0xec3  //Cleaver
+//Axes
+@pushlist weapontypes 0xf43 //Hatchet
+@pushlist weapontypes 0xf45 //Executioner's Axe
+@pushlist weapontypes 0xf4d //Bardiche
+@pushlist weapontypes 0xf4b  //Double Axe
+@pushlist weapontypes 0x143e //Halberd
+@pushlist weapontypes 0x13fb //Large Battle Axe
+@pushlist weapontypes 0x1443 //Two Handed Axe
+@pushlist weapontypes 0xf47  //Battle Axe
+@pushlist weapontypes 0xf49  //Axe
+@pushlist weapontypes 0xe85  //Pickaxe
+@pushlist weapontypes 0xe86  //Pickaxe
+//Bows
+@pushlist weapontypes 0x13fd //HeavyXbow
+@pushlist weapontypes 0xf50  //Xbow
+@pushlist weapontypes 0x13b2 //bow
+//////////////////////////////////////////////////////////////////////////
+for 0 to weapontypes
+  clearjournal
+  while @findtype 'weapontypes[]' 'any' 'frombag'
+    sysmsg 'found'
+    // @setalias itemtoid found
+    //click item
+    clickobject found
+    //speed control
+    pause 500
+    if @injournal mods[0] 'system'
+      moveitem found foundbag
+      pause 1000
+      headmsg mods[0] '2213'
+      @clearjournal
+    else
+      ignoreobject found
+      @clearjournal
+    endif
+    if weight > 375
+      headmsg 'Go and sell this crap' 55
+      playsound 'f_kiss.wav'
+      stop
+    endif
+  endwhile
+endfor
+headmsg 'Complete'
